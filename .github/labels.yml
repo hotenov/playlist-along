@@ -64,7 +64,7 @@
   color: ffffff
 # Priority Labels
 - name: ASAP
-  color: FF00009
+  color: FF0000
   description: As Soon As Possible issues
 - name: High
   color: DC143C
