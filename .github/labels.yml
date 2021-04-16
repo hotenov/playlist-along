@@ -27,10 +27,10 @@
 - name: ci
   description: Continuous Integration
   color: 4a97d6
-- name: "doc"
-	color: "FFECDB"
-	description: "Improvements or additions to documentation"
-  from_name: "documentation"
+- name: doc
+  color: ffecdb
+  description: Improvements or additions to documentation
+  from_name: documentation
 - name: refactoring
   description: Refactoring
   color: ef67c4
@@ -63,31 +63,31 @@
   description: This will not be worked on
   color: ffffff
 # Priority Labels
-- name: "ASAP"
-	color: "FF00009"
-	description: ""As Soon As Possible" issues"
-- name: "High"
-	color: "DC143C"
-	description: "Very important task from business point of view"
-- name: "Normal"
-	color: "ff8c00"
-	description: "Normal (medium) priority task from business point of view"
-- name: "Low"
-	color: "FFDAB9"
-	description: "Low priority task from business point of view"
+- name: ASAP
+	color: FF00009
+	description: As Soon As Possible issues
+- name: High
+	color: DC143C
+	description: Very important task from business point of view
+- name: Normal
+	color: ff8c00
+	description: Normal (medium) priority task from business point of view
+- name: Low
+	color: FFDAB9
+	description: Low priority task from business point of view
 # Severity Labels
-- name: "critical"
-	color: "FF4540"
-	description: "Critical bug severity"
-- name: "major"
-	color: "FFAC40"
-	description: "Major bug severity"
-- name: "moderate"
-	color: "E49744"
-	description: "Moderate (medium) bug severity"
-- name: "minor"
-	color: "E3FB71"
-	description: "Minor bug severity"
-- name: "cosmetic"
-	color: "64B4D4"
-	description: "Cosmetic bug severity"
+- name: critical
+	color: FF4540
+	description: Critical bug severity
+- name: major
+	color: FFAC40
+	description: Major bug severity
+- name: moderate
+	color: E49744
+	description: Moderate (medium) bug severity
+- name: minor
+	color: E3FB71
+	description: Minor bug severity
+- name: cosmetic
+	color: 64B4D4
+	description: Cosmetic bug severity
