@@ -1,0 +1,11 @@
+{
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Artem Hotenov",
+  "email": "qa@hotenov.com",
+  "friendly_name": "Playlist Along",
+  "github_user": "hotenov",
+  "license": "MIT",
+  "package_name": "playlist_along",
+  "project_name": "playlist-along",
+  "version": "0.0.0"
+}
