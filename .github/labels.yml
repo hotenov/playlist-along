@@ -64,30 +64,30 @@
   color: ffffff
 # Priority Labels
 - name: ASAP
-	color: FF00009
-	description: As Soon As Possible issues
+  color: FF00009
+  description: As Soon As Possible issues
 - name: High
-	color: DC143C
-	description: Very important task from business point of view
+  color: DC143C
+  description: Very important task from business point of view
 - name: Normal
-	color: ff8c00
-	description: Normal (medium) priority task from business point of view
+  color: ff8c00
+  description: Normal (medium) priority task from business point of view
 - name: Low
-	color: FFDAB9
-	description: Low priority task from business point of view
+  color: FFDAB9
+  description: Low priority task from business point of view
 # Severity Labels
 - name: critical
-	color: FF4540
-	description: Critical bug severity
+  color: FF4540
+  description: Critical bug severity
 - name: major
-	color: FFAC40
-	description: Major bug severity
+  color: FFAC40
+  description: Major bug severity
 - name: moderate
-	color: E49744
-	description: Moderate (medium) bug severity
+  color: E49744
+  description: Moderate (medium) bug severity
 - name: minor
-	color: E3FB71
-	description: Minor bug severity
+  color: E3FB71
+  description: Minor bug severity
 - name: cosmetic
-	color: 64B4D4
-	description: Cosmetic bug severity
+  color: 64B4D4
+  description: Cosmetic bug severity
