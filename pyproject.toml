@@ -45,6 +45,7 @@ sphinx-click = "^2.7.1"
 Pygments = "^2.8.1"
 flake8-import-order = "^0.18.1"
 flake8-black = "^0.2.1"
+pytest-datafiles = "^2.0"
 
 [tool.poetry.scripts]
 playlist-along = "playlist_along.__main__:main"
