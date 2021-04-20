@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<playlist xmlns="http://xspf.org/ns/0/" xmlns:vlc="http://www.videolan.org/vlc/playlist/ns/0/" version="1">
+	<title>Playlist</title>
+	<trackList>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/02%20Dabro%20-%20%D0%AE%D0%BD%D0%BE%D1%81%D1%82%D1%8C%20(Mikis%20Remix)%20[rus%20dance].mp3</location>
+			<title>Юность (Mikis Remix)</title>
+			<creator>Dabro</creator>
+			<album>http://promodj.com/djmikis</album>
+			<annotation>4A - http://promodj.com/djmikis</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/artistalbum/Dabro/http___promodj.com_djmikis/art</image>
+			<duration>267392</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>0</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/03%20%D0%9A%D0%BB%D0%B0%D0%B2%D0%B0%20%D0%9A%D0%BE%D0%BA%D0%B0%20-%20%D0%9F%D1%8C%D1%8F%D0%BD%D1%83%D1%8E%20%D0%B4%D0%BE%D0%BC%D0%BE%D0%B9%20(DJ%20Brooklyn%20Edit)%20[rus%20pop%20dance].mp3</location>
+			<title>Пьяную домой (DJ Brooklyn Edit)</title>
+			<creator>Клава Кока</creator>
+			<annotation>4A</annotation>
+			<duration>201302</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>1</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/04%20IOWA%20-%20%D0%9F%D0%BE%D1%82%D0%B0%D0%BD%D1%86%D1%83%D0%B9%20%D0%A1%D0%BE%20%D0%9C%D0%BD%D0%BE%D0%B9%20(JONVS%20Radio%20Remix)%20[rus%20pop%20dance].mp3</location>
+			<title>Потанцуй Со Мной (JONVS Radio Remix)</title>
+			<creator>IOWA</creator>
+			<annotation>5A</annotation>
+			<duration>207180</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>2</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/05%20NILETTO%20-%20%D0%9B%D1%8E%D0%B1%D0%B8%D0%BC%D0%BA%D0%B0%20(Rakurs%20&amp;%20Major%20Remix)%20[rus%20pop%20dance].mp3</location>
+			<title>Любимка (Rakurs &amp; Major Remix)</title>
+			<creator>NILETTO</creator>
+			<annotation>6A</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/arturl/4730074427e0ada29a0d86f63e47be85/art</image>
+			<duration>257439</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>3</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/06%20%D0%90%D0%BD%D0%B5%D1%82%20%D0%A1%D0%B0%D0%B9%20&amp;%20NILETTO%20-%20%D0%9D%D0%B5%20%D0%BB%D1%8E%D0%B1%D0%BB%D1%8E_%20(Vadim%20Adamov%20&amp;%20Hardphol%20Remix)%20(Radio%20Edit)%20[rus%20pop%20dance].mp3</location>
+			<title>Не люблю_ (Vadim Adamov &amp; Hardphol Remix) (Radio Edit)</title>
+			<creator>Анет Сай &amp; NILETTO</creator>
+			<album>Vadim Adamov &amp; Hardphol Remix</album>
+			<annotation>6A</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/artistalbum/%D0%90%D0%BD%D0%B5%D1%82%20%D0%A1%D0%B0%D0%B9%20%26%20NILETTO/Vadim%20Adamov%20%26%20Hardphol%20Remix/art.png</image>
+			<duration>160656</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>4</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/07%20JONY%20-%20%D0%9A%D0%BE%D0%BC%D0%B5%D1%82%D0%B0%20(Leo%20Burn%20Remix)%20[rus%20pop%20dance].mp3</location>
+			<title>Комета (Leo Burn Remix)</title>
+			<creator>JONY</creator>
+			<annotation>6A</annotation>
+			<duration>247617</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>5</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/08%20Zivert%20-%20Credo%20(Dobrynin%20Remix)%20[rus%20pop%20dance].mp3</location>
+			<title>Credo (Dobrynin Remix)</title>
+			<creator>Zivert</creator>
+			<annotation>8A - https://vk.com/sweetbeats</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/arturl/5d83fa7ad81b6cab6ec51d08c6cb9d58/art</image>
+			<duration>249864</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>6</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/09%20%D0%B4%D0%BE%D1%80%D0%B0%20-%20%D0%92%D1%82%D1%8E%D1%80%D0%B8%D0%BB%D0%B0%D1%81%D1%8C%20(Pahus%20&amp;%20D.%20Anuchin%20Remix)%20[rus%20pop%20dance].mp3</location>
+			<title>Втюрилась (Pahus &amp; D. Anuchin Remix)</title>
+			<creator>дора</creator>
+			<annotation>7A</annotation>
+			<duration>236150</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>7</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/10%20Ramil%20-%20%D0%91%D0%BE%D0%BC%D0%B1%D0%B0%D0%BB%D0%B5%D0%B9%D0%BB%D0%B0%20(Dj%20Killjoy%20Remix)%20[rus%20dance].mp3</location>
+			<title>Бомбалейла (Dj Killjoy Remix)</title>
+			<creator>Ramil</creator>
+			<annotation>8A</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/arturl/0b4ed433909170a5ef684588909dd3b4/art.png</image>
+			<duration>219275</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>8</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/11%20Zivert%20-%20%D0%AF%D0%A2%D0%9B%20(Kolya%20Dark%20&amp;%20DJ%20Prezzplay%20Remix)%20[rus%20deep%20dance].mp3</location>
+			<title>ЯТЛ (Kolya Dark &amp; DJ Prezzplay Remix)</title>
+			<creator>Zivert</creator>
+			<annotation>8A - https://vk.com/sweetbeats</annotation>
+			<image>file:///C:/Users/sprya/AppData/Roaming/vlc/art/arturl/ba03a991c7f39be3838b95451af374c3/art</image>
+			<duration>271519</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>9</vlc:id>
+			</extension>
+		</track>
+		<track>
+			<location>file:///D:/tmp/tmp_mp3/cp1251/01%20MONATIK,%20%D0%92%D0%B5%D1%80%D0%B0%20%D0%91%D1%80%D0%B5%D0%B6%D0%BD%D0%B5%D0%B2%D0%B0%20-%20%D0%92%D0%95%D0%A7%D0%95%D0%A0%D0%B8%D0%9D%D0%9E%D0%A7%D0%9A%D0%90%20[rus%20pop%20dance].mp3</location>
+			<title>ВЕЧЕРиНОЧКА</title>
+			<creator>MONATIK, Вера Брежнева</creator>
+			<annotation>4A</annotation>
+			<duration>238788</duration>
+			<extension application="http://www.videolan.org/vlc/playlist/0">
+				<vlc:id>10</vlc:id>
+			</extension>
+		</track>
+	</trackList>
+	<extension application="http://www.videolan.org/vlc/playlist/0">
+		<vlc:item tid="0"/>
+		<vlc:item tid="1"/>
+		<vlc:item tid="2"/>
+		<vlc:item tid="3"/>
+		<vlc:item tid="4"/>
+		<vlc:item tid="5"/>
+		<vlc:item tid="6"/>
+		<vlc:item tid="7"/>
+		<vlc:item tid="8"/>
+		<vlc:item tid="9"/>
+		<vlc:item tid="10"/>
+	</extension>
+</playlist>
