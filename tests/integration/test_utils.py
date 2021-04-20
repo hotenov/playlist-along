@@ -27,6 +27,6 @@ def test_encoding_detection_for_files(datafiles: Any) -> None:
     """It detects correct encoding for prepared files."""
     expected = ["utf-16-le", "utf-8", "utf-8-sig", "cp1251", "utf-8-sig", "utf-8"]
     actual = []
-    for playlist in datafiles.listdir():
+    for playlist in sorted(datafiles.listdir()):
         actual.append(detect_file_encoding(Path(playlist)))
     assert actual == expected
