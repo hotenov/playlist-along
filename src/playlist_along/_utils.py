@@ -1,10 +1,11 @@
+"""Module with utilities (helpers)."""
 from pathlib import Path
 
 from charset_normalizer import CharsetNormalizerMatches as CnM
 
 
 def detect_file_encoding(path: Path) -> str:
-    """Return a approximate encoding of text file.
+    """Return an approximate encoding of text file.
 
     Performs an encoding detection and BOM check.
 
@@ -12,27 +13,27 @@ def detect_file_encoding(path: Path) -> str:
         path: The path to playlist file
 
     Returns:
-        A string with encoding ('utf-8', 'utf-8-sig', 'cp1251', etc.).
+        A string with "best" encoding from following:
+        'utf-8', 'utf-8-sig', 'cp1251', 'cp1252', 'utf_16_le'.
 
     Raises:
-        TO DO.
+        TO DO ClickException on
+        AttributeError: The encoding was not retrieved from 'charset_normalizer' or
+        the HTTP response contained an invalid body.
+        FileNotFoundError: The file was no found
     """
-    with open(path, "rb") as playlist_file:
-        textdata = playlist_file.read()
-
-    detection_result = CnM.from_bytes(textdata).best().first()
+    detection_result = (
+        CnM.from_path(path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"])
+        .best()
+        .first()
+    )
 
     encoding = "utf-8"
-    if detection_result.byte_order_mark and detection_result.encoding == "utf_8":
-        encoding = "utf-8-sig"
-    elif detection_result.encoding == "cp1251":
-        encoding = "cp1251"
-    elif detection_result.encoding == "gb18030":  # VLC playlist
-        encoding = "utf-8"
-    elif detection_result.encoding == "utf_16":  # .aimppl4 playlist
+    if path.suffix == ".aimppl4":
         encoding = "utf-16-le"
     elif detection_result.encoding == "utf_8":
-        encoding = "utf-8"
+        if detection_result.byte_order_mark:
+            encoding = "utf-8-sig"
     else:
         encoding = detection_result.encoding
 
