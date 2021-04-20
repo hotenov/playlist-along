@@ -1,19 +1,22 @@
 Playlist Along
 ==============
 
-|PyPI| |Python Version| |License|
+|Status| |PyPI| |Python Version| |License|
 
 |Read the Docs| |Tests| |Codecov|
 
 |Black|
 
+.. |Status| image:: https://badgen.net/badge/status/alpha/d8624d
+   :target: https://badgen.net/badge/status/alpha/d8624d
+   :alt: Project Status
 .. |PyPI| image:: https://img.shields.io/pypi/v/playlist-along.svg
    :target: https://pypi.org/project/playlist-along/
    :alt: PyPI
 .. |Python Version| image:: https://img.shields.io/pypi/pyversions/playlist-along
    :target: https://pypi.org/project/playlist-along
    :alt: Python Version
-.. |License| image:: https://img.shields.io/pypi/l/playlist-along
+.. |License| image:: https://img.shields.io/pypi/l/playlist-along.svg
    :target: https://opensource.org/licenses/MIT
    :alt: License
 .. |Read the Docs| image:: https://img.shields.io/readthedocs/playlist-along/latest.svg?label=Read%20the%20Docs
