@@ -2,6 +2,7 @@
 from pathlib import Path
 
 from charset_normalizer import CharsetNormalizerMatches as CnM
+import click
 
 
 def detect_file_encoding(path: Path) -> str:
@@ -17,24 +18,26 @@ def detect_file_encoding(path: Path) -> str:
         'utf-8', 'utf-8-sig', 'cp1251', 'cp1252', 'utf_16_le'.
 
     Raises:
-        TO DO ClickException on
-        AttributeError: The encoding was not retrieved from 'charset_normalizer' or
-        the HTTP response contained an invalid body.
-        FileNotFoundError: The file was no found
+        ClickException: The file was no found or
+            the encoding was not retrieved from 'charset_normalizer'
     """
-    detection_result = (
-        CnM.from_path(path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"])
-        .best()
-        .first()
-    )
+    try:
+        detection_result = (
+            CnM.from_path(path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"])
+            .best()
+            .first()
+        )
 
-    encoding = "utf-8"
-    if path.suffix == ".aimppl4":
-        encoding = "utf-16-le"
-    elif detection_result.encoding == "utf_8":
-        if detection_result.byte_order_mark:
-            encoding = "utf-8-sig"
-    else:
-        encoding = detection_result.encoding
+        encoding = "utf-8"
+        if path.suffix == ".aimppl4":
+            encoding = "utf-16-le"
+        elif detection_result.encoding == "utf_8":
+            if detection_result.byte_order_mark:
+                encoding = "utf-8-sig"
+        else:
+            encoding = detection_result.encoding
 
-    return encoding
+        return encoding
+    except (FileNotFoundError, AttributeError) as error:
+        message = str(error)
+        raise click.ClickException(message)
