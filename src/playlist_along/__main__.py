@@ -1,11 +1,10 @@
 """Command-line interface."""
-import click
+from playlist_along.console import cli
 
 
-@click.command()
-@click.version_option()
 def main() -> None:
     """Playlist Along."""
+    cli(obj={})
 
 
 if __name__ == "__main__":
