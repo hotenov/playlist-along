@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import click
+from click import Context, Option
 
 from playlist_along import playlist
 
@@ -12,15 +13,15 @@ def display_tracks(file: Path, encoding: str = None) -> None:
     click.echo("\n".join(only_paths))
 
 
-def validate_formats(ctx, param, value):
+def validate_formats(ctx: Context, param: Option, value: str) -> str:
     """Validate supported playlist formats."""
     supported_formats = [".m3u", ".m3u8"]
-    if Path(value).suffix not in supported_formats:
+    if Path(value).suffix in supported_formats:
+        return value
+    else:
         raise click.BadParameter(
             "currently we supported only these formats: %s" % supported_formats
         )
-    else:
-        return value
 
 
 @click.group(invoke_without_command=True)
@@ -30,7 +31,7 @@ def validate_formats(ctx, param, value):
     callback=validate_formats,
 )
 @click.pass_context
-def cli(ctx, file):
+def cli(ctx: Context, file: str) -> None:
     """Group of commands."""
     ctx.ensure_object(dict)
     ctx.obj["FILE"] = file
@@ -40,6 +41,6 @@ def cli(ctx, file):
 
 @cli.command()
 @click.pass_context
-def display(ctx):
+def display(ctx: Context) -> None:
     """Display command."""
     display_tracks(Path(ctx.obj["FILE"]))
