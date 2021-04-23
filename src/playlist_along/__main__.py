@@ -21,7 +21,7 @@ def main(ctx: Context, file: str) -> None:
     """Playlist Along."""
     if file is None:
         click.echo("No parameters. Try 'playlist-along --help' for help.")
-        return
+        exit(0)
     ctx.ensure_object(dict)
     ctx.obj["FILE"] = file
     if ctx.invoked_subcommand is None:
