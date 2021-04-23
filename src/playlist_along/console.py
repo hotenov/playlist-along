@@ -1,10 +1,10 @@
-"""CLI commands."""
+"""CLI commands and functions."""
 from pathlib import Path
 
 import click
 from click import Context, Option
 
-from playlist_along import playlist
+from . import playlist
 
 
 def display_tracks(file: Path, encoding: str = None) -> None:
@@ -15,6 +15,9 @@ def display_tracks(file: Path, encoding: str = None) -> None:
 
 def validate_formats(ctx: Context, param: Option, value: str) -> str:
     """Validate supported playlist formats."""
+    # For script running without parameters
+    if not value:
+        return
     supported_formats = [".m3u", ".m3u8"]
     if Path(value).suffix in supported_formats:
         return value
@@ -24,22 +27,7 @@ def validate_formats(ctx: Context, param: Option, value: str) -> str:
         )
 
 
-@click.group(invoke_without_command=True)
-@click.option(
-    "--file",
-    "-f",
-    callback=validate_formats,
-)
-@click.pass_context
-def cli(ctx: Context, file: str) -> None:
-    """Group of commands."""
-    ctx.ensure_object(dict)
-    ctx.obj["FILE"] = file
-    if ctx.invoked_subcommand is None:
-        display_tracks(Path(file))
-
-
-@cli.command()
+@click.command()
 @click.pass_context
 def display(ctx: Context) -> None:
     """Display command."""

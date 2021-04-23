@@ -1,11 +1,37 @@
 """Command-line interface."""
-from playlist_along.console import cli
+from pathlib import Path
+import sys
+
+import click
+from click import Context
+
+from . import console
 
 
-def main() -> None:
+@click.group(invoke_without_command=True)
+@click.version_option()
+@click.option(
+    "--file",
+    "-f",
+    callback=console.validate_formats,
+    is_eager=True,
+)
+@click.pass_context
+def main(ctx: Context, file: str) -> None:
     """Playlist Along."""
-    cli(obj={})
+    if file is None:
+        click.echo("No parameters. Try 'playlist-along --help' for help.")
+        return
+    ctx.ensure_object(dict)
+    ctx.obj["FILE"] = file
+    if ctx.invoked_subcommand is None:
+        console.display_tracks(Path(file))
 
+
+main.add_command(console.display)
 
 if __name__ == "__main__":
-    main(prog_name="playlist-along")  # pragma: no cover
+    if len(sys.argv) == 0:
+        main(prog_name="playlist-along")  # pragma: no cover
+    else:
+        main()
