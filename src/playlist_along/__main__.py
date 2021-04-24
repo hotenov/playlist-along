@@ -34,7 +34,7 @@ def main(ctx: Context, file: str) -> None:
 main.add_command(console.display)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1:
+    if len(sys.argv) == 1:  # pragma: no cover
         main(prog_name="playlist-along")  # pragma: no cover
-    else:
-        main()
+    else:  # pragma: no cover
+        main()  # pragma: no cover
