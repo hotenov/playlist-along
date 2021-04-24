@@ -8,7 +8,10 @@ from click import Context
 from . import console
 
 
-@click.group(invoke_without_command=True)
+@click.group(
+    invoke_without_command=True,
+    no_args_is_help=True,
+)
 @click.version_option()
 @click.option(
     "--file",
@@ -20,7 +23,7 @@ from . import console
 def main(ctx: Context, file: str) -> None:
     """Playlist Along."""
     if file is None:
-        click.echo("No parameters. Try 'playlist-along --help' for help.")
+        click.echo("Wrong execution order. Try 'playlist-along --help' for help.")
         exit(0)
     ctx.ensure_object(dict)
     ctx.obj["FILE"] = file
@@ -31,7 +34,7 @@ def main(ctx: Context, file: str) -> None:
 main.add_command(console.display)
 
 if __name__ == "__main__":
-    if len(sys.argv) == 0:
+    if len(sys.argv) == 1:
         main(prog_name="playlist-along")  # pragma: no cover
     else:
         main()

@@ -19,8 +19,8 @@ def validate_formats(
 ) -> Any:
     """Validate supported playlist formats."""
     # For script running without parameters
-    if not value:
-        exit(0)
+    if not value or ctx.resilient_parsing:
+        return
     supported_formats = [".m3u", ".m3u8"]
     if Path(value).suffix in supported_formats:
         return value
