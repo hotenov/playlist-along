@@ -1,17 +1,11 @@
 """CLI commands and functions."""
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, Union
 
 import click
 from click import Context, Option, Parameter
 
 from . import playlist
-
-
-def display_tracks(file: Path, encoding: Optional[str] = None) -> None:
-    """Display only tracks from playlist file."""
-    only_paths = playlist.get_only_paths_from_m3u(Path(file), encoding)
-    click.echo("\n".join(only_paths))
 
 
 def validate_formats(
@@ -30,8 +24,14 @@ def validate_formats(
         )
 
 
+# Decorator for passing path to playlist file
+pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
+
+
 @click.command()
-@click.pass_context
-def display(ctx: Context) -> None:
+# @click.pass_context
+@pass_file
+def display(pls_file: playlist.PlsFile) -> None:
     """Display command."""
-    display_tracks(Path(ctx.obj["FILE"]))
+    # display_tracks(Path(ctx.obj["FILE"]))
+    playlist.display_tracks(pls_file)

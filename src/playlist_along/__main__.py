@@ -1,11 +1,10 @@
 """Command-line interface."""
-from pathlib import Path
 import sys
 
 import click
 from click import Context
 
-from . import console
+from . import console, playlist
 
 
 @click.group(
@@ -25,10 +24,9 @@ def main(ctx: Context, file: str) -> None:
     if file is None:
         click.echo("Wrong execution order. Try 'playlist-along --help' for help.")
         exit(0)
-    ctx.ensure_object(dict)
-    ctx.obj["FILE"] = file
+    ctx.obj = playlist.PlsFile(file)
     if ctx.invoked_subcommand is None:
-        console.display_tracks(Path(file))
+        playlist.display_tracks(ctx.obj)
 
 
 main.add_command(console.display)
