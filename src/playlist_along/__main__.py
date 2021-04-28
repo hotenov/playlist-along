@@ -15,6 +15,7 @@ from . import console, playlist
 @click.option(
     "--file",
     "-f",
+    type=str,
     callback=console.validate_formats,
     is_eager=True,
 )
