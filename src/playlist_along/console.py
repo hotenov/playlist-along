@@ -29,9 +29,8 @@ pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
 
 
 @click.command()
-# @click.pass_context
 @pass_file
 def display(pls_file: playlist.PlsFile) -> None:
     """Display command."""
-    # display_tracks(Path(ctx.obj["FILE"]))
-    playlist.display_tracks(pls_file)
+    file: Path = pls_file.home
+    playlist.display_tracks(file)

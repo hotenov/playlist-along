@@ -1,4 +1,5 @@
 """Command-line interface."""
+from pathlib import Path
 import sys
 
 import click
@@ -22,12 +23,14 @@ from . import console, playlist
 @click.pass_context
 def main(ctx: Context, file: str) -> None:
     """Playlist Along."""
-    if file is None:
-        click.echo("Wrong execution order. Try 'playlist-along --help' for help.")
-        exit(0)
     ctx.obj = playlist.PlsFile(file)
-    if ctx.invoked_subcommand is None:
-        playlist.display_tracks(ctx.obj)
+
+    if file is None:
+        click.echo("No file for script. Try 'playlist-along --help' for help.")
+        ctx.exit()
+    else:
+        if ctx.invoked_subcommand is None:
+            playlist.display_tracks(Path(file))
 
 
 main.add_command(console.display)

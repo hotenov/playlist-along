@@ -15,10 +15,9 @@ class PlsFile(object):
         self.home: Path = Path(home or ".")
 
 
-def display_tracks(file: PlsFile, encoding: Optional[str] = None) -> None:
+def display_tracks(file: Path, encoding: Optional[str] = None) -> None:
     """Display only tracks from playlist file."""
-    path: Path = file.home
-    only_paths = get_only_track_paths_from_m3u(path, encoding)
+    only_paths = get_only_track_paths_from_m3u(file, encoding)
     click.echo("\n".join(only_paths))
 
 
