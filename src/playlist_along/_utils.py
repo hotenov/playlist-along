@@ -38,6 +38,6 @@ def detect_file_encoding(path: Path) -> str:
             encoding = detection_result.encoding
 
         return encoding
-    except (FileNotFoundError, AttributeError) as error:
+    except (OSError, AttributeError) as error:
         message = str(error)
         raise click.ClickException(message)
