@@ -20,7 +20,7 @@ def validate_formats(
         return value
     else:
         raise click.BadParameter(
-            "currently we supported only these formats: %s" % supported_formats
+            "currently we are supporting only these formats: %s" % supported_formats
         )
 
 
