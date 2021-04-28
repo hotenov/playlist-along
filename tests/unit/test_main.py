@@ -18,11 +18,11 @@ def test_main_prints_version(runner: CliRunner) -> None:
     assert "playlist-along, version 20" in result.output
 
 
-def test_main_exits_when_wrong_command_order(runner: CliRunner) -> None:
+def test_main_exits_when_no_file_pass(runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     result = runner.invoke(__main__.main, ["display"])
     assert result.exit_code == 0
-    assert "Wrong execution order." in result.output
+    assert "No file for script" in result.output
 
 
 def test_main_prints_tracklist_itself(runner: CliRunner) -> None:
