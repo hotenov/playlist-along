@@ -1,11 +1,10 @@
 """Test cases for the __main__ module."""
-from click.testing import CliRunner
+from pytest import ExitCode
 
-from playlist_along.cli import cli
+from playlist_along import __main__
 
 
-def test_main_succeeds_without_args(runner: CliRunner) -> None:
+def test_main_succeeds() -> None:
     """It exits with a status code of zero."""
-    result = runner.invoke(cli, prog_name="playlist-along")
-    assert result.exit_code == 0
-    assert "Usage: playlist-along [OPTIONS]" in result.output
+    __main__.main
+    assert bool(ExitCode.OK) is False
