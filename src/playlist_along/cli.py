@@ -6,7 +6,7 @@ import click
 from click import Context, Option, Parameter
 
 from playlist_along import __version__
-from . import playlist
+from .playlist import Playlist
 
 
 def validate_formats(
@@ -26,7 +26,7 @@ def validate_formats(
 
 
 # Decorator for passing path to playlist file
-pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
+pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
 
 
 @click.group(
@@ -46,19 +46,19 @@ pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
 @click.pass_context
 def cli(ctx: Context, file: str) -> None:
     """Playlist Along - a CLI for playlist processing."""
-    ctx.obj = playlist.PlsFile(file)
+    ctx.obj = Playlist(file)
 
     if file is None:
         click.echo("No file for script. Try 'playlist-along --help' for help.")
         ctx.exit()
     else:
         if ctx.invoked_subcommand is None:
-            playlist.display_tracks(Path(file))
+            display_tracks(Path(file))
 
 
 @cli.command()
-@pass_file
-def display(pls_file: playlist.PlsFile) -> None:
+@pass_playlist
+def display(pls_obj: Playlist) -> None:
     """Displays tracks from playlist."""
-    file: Path = pls_file.home
-    playlist.display_tracks(file)
+    file: Path = pls_obj.path
+    display_tracks(file)

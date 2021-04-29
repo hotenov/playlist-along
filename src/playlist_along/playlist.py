@@ -7,12 +7,12 @@ import click
 from ._utils import detect_file_encoding
 
 
-class PlsFile(object):
+class Playlist(object):
     """File object class."""
 
-    def __init__(self, home: Optional[str] = None) -> None:
+    def __init__(self, path: Optional[str] = None) -> None:
         """Initialization of class instance."""
-        self.home: Path = Path(home or ".")
+        self.path: Path = Path(path or ".")
 
 
 def display_tracks(file: Path, encoding: Optional[str] = None) -> None:
