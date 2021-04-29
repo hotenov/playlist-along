@@ -26,7 +26,7 @@ nox.options.sessions = (
     "safety",
     "mypy",
     "tests",
-    "typeguard",
+    # "typeguard",  # wait for Click 8.0 release
     "xdoctest",
     "docs-build",
 )
