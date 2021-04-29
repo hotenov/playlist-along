@@ -5,7 +5,7 @@ from typing import Any
 
 import pytest
 
-from playlist_along._utils import detect_file_encoding
+from playlist_along._utils import _detect_file_encoding
 
 
 FIXTURE_DIR = os.path.join(
@@ -28,5 +28,5 @@ def test_encoding_detection_for_files(datafiles: Any) -> None:
     expected = ["utf-16-le", "utf-8", "utf-8-sig", "cp1251", "utf-8-sig", "utf-8"]
     actual = []
     for playlist in sorted(datafiles.listdir()):
-        actual.append(detect_file_encoding(Path(playlist)))
+        actual.append(_detect_file_encoding(Path(playlist)))
     assert actual == expected

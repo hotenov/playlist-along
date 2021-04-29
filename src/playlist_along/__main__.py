@@ -1,12 +1,17 @@
 """Command-line interface."""
-import click
+import sys
+from typing import Any
+
+from .cli import cli
 
 
-@click.command()
-@click.version_option()
-def main() -> None:
-    """Playlist Along."""
+def main() -> Any:
+    """Return CLI click group."""
+    return cli(obj={})  # pragma: no cover
 
 
 if __name__ == "__main__":
-    main(prog_name="playlist-along")  # pragma: no cover
+    if len(sys.argv) == 1:  # pragma: no cover
+        cli(prog_name="playlist-along")  # pragma: no cover
+    else:  # pragma: no cover
+        main()  # pragma: no cover
