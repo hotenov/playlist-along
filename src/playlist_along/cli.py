@@ -5,6 +5,7 @@ from typing import Any, Union
 import click
 from click import Context, Option, Parameter
 
+from playlist_along import __version__
 from . import playlist
 
 
@@ -28,7 +29,32 @@ def validate_formats(
 pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
 
 
-@click.command()
+@click.group(
+    invoke_without_command=True,
+    no_args_is_help=True,
+)
+@click.version_option(version=__version__)
+@click.option(
+    "--file",
+    "-f",
+    type=str,
+    callback=validate_formats,
+    is_eager=True,
+)
+@click.pass_context
+def cli(ctx: Context, file: str) -> None:
+    """Playlist Along."""
+    ctx.obj = playlist.PlsFile(file)
+
+    if file is None:
+        click.echo("No file for script. Try 'playlist-along --help' for help.")
+        ctx.exit()
+    else:
+        if ctx.invoked_subcommand is None:
+            playlist.display_tracks(Path(file))
+
+
+@cli.command()
 @pass_file
 def display(pls_file: playlist.PlsFile) -> None:
     """Display command."""
