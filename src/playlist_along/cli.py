@@ -1,11 +1,12 @@
 """CLI commands and functions."""
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 import click
 from click import Context, Option, Parameter
 
 from playlist_along import __version__
+from . import playlist
 from .playlist import Playlist
 
 
@@ -27,6 +28,12 @@ def validate_formats(
 
 # Decorator for passing path to playlist file
 pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+
+
+def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
+    """Display only tracks from playlist file via click.echo()."""
+    only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
+    click.echo("\n".join(only_paths))
 
 
 @click.group(
@@ -53,7 +60,7 @@ def cli(ctx: Context, file: str) -> None:
         ctx.exit()
     else:
         if ctx.invoked_subcommand is None:
-            display_tracks(Path(file))
+            echo_tracks_with_click(Path(file))
 
 
 @cli.command()
@@ -61,4 +68,4 @@ def cli(ctx: Context, file: str) -> None:
 def display(pls_obj: Playlist) -> None:
     """Displays tracks from playlist."""
     file: Path = pls_obj.path
-    display_tracks(file)
+    echo_tracks_with_click(file)
