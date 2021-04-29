@@ -40,10 +40,12 @@ pass_file = click.make_pass_decorator(playlist.PlsFile, ensure=True)
     type=str,
     callback=validate_formats,
     is_eager=True,
+    help="Full path to playlist file.",
+    metavar="<string>",
 )
 @click.pass_context
 def cli(ctx: Context, file: str) -> None:
-    """Playlist Along."""
+    """Playlist Along - a CLI for playlist processing."""
     ctx.obj = playlist.PlsFile(file)
 
     if file is None:
@@ -57,6 +59,6 @@ def cli(ctx: Context, file: str) -> None:
 @cli.command()
 @pass_file
 def display(pls_file: playlist.PlsFile) -> None:
-    """Display command."""
+    """Displays tracks from playlist."""
     file: Path = pls_file.home
     playlist.display_tracks(file)
