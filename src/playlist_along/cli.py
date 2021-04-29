@@ -10,7 +10,17 @@ from . import playlist
 from .playlist import Playlist
 
 
-def validate_formats(
+# Decorator for passing path to playlist file
+pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+
+
+def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
+    """Display only tracks from playlist file via click.echo()."""
+    only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
+    click.echo("\n".join(only_paths))
+
+
+def validate_file_callback(
     ctx: Context, param: Union[Option, Parameter], value: Any = None
 ) -> Any:
     """Validate supported playlist formats."""
@@ -26,16 +36,6 @@ def validate_formats(
         )
 
 
-# Decorator for passing path to playlist file
-pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
-
-
-def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
-    """Display only tracks from playlist file via click.echo()."""
-    only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
-    click.echo("\n".join(only_paths))
-
-
 @click.group(
     invoke_without_command=True,
     no_args_is_help=True,
@@ -45,7 +45,7 @@ def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
     "--file",
     "-f",
     type=str,
-    callback=validate_formats,
+    callback=validate_file_callback,
     is_eager=True,
     help="Full path to playlist file.",
     metavar="<string>",
