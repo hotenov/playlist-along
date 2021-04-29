@@ -5,7 +5,7 @@ from charset_normalizer import CharsetNormalizerMatches as CnM
 import click
 
 
-def detect_file_encoding(path: Path) -> str:
+def _detect_file_encoding(path: Path) -> str:
     """Return an approximate encoding of text file.
 
     Performs an encoding detection and BOM check.
