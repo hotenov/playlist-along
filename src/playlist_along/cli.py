@@ -69,3 +69,34 @@ def display(pls_obj: Playlist) -> None:
     """Displays tracks from playlist."""
     file: Path = pls_obj.path
     echo_tracks_with_click(file)
+
+
+@cli.command()
+@click.option(
+    "--dest",
+    "-d",
+    type=str,
+    help="Directory or full path to playlist destination.",
+    metavar="<string>",
+)
+@click.option(
+    "--copy",
+    is_flag=True,
+    help="Copy files from playlist.",
+)
+@pass_playlist
+def convert(pls_obj: Playlist, dest: str, copy: bool) -> None:
+    """Converts playlist from one player to another."""
+    file: Path = pls_obj.path
+    convert_from_aimp_to_vlc_android(file, dest, copy)
+
+
+def convert_from_aimp_to_vlc_android(file: Path, dest: str, copy: bool) -> None:
+    """Converts AIMP playlist to VLC for Android."""
+    converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
+    target_pls: Path
+    if Path(dest).is_dir:
+        target_pls = Path(dest) / file.name
+    else:
+        target_pls = dest
+    target_pls.write_text(converted_pls, encoding)
