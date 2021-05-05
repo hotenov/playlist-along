@@ -36,13 +36,13 @@ def test_cli_prints_tracklist_itself(runner: CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("tiny.m3u", "w") as f:
             f.write(
-                """First track!
-            Second Track!
+                """First track!.mp3
+            Second Track!.flac
             """
             )
 
         result = runner.invoke(cli, ["--file", "tiny.m3u"])
-        assert result.output == "First track!\nSecond Track!\n\n"
+        assert result.output == "First track!.mp3\nSecond Track!.flac\n"
 
 
 def test_cli_fails_unknown_command(runner: CliRunner) -> None:
@@ -56,10 +56,10 @@ def test_cli_prints_tracklist_with_display(runner: CliRunner) -> None:
     with runner.isolated_filesystem():
         with open("tiny.m3u", "w") as f:
             f.write(
-                """First track!
-            Second Track!
+                """First track!.flac
+            Second Track!.mp3
             """
             )
 
         result = runner.invoke(cli, ["--file", "tiny.m3u", "display"])
-        assert result.output == "First track!\nSecond Track!\n\n"
+        assert result.output == "First track!.flac\nSecond Track!.mp3\n"
