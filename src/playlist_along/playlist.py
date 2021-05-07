@@ -38,22 +38,30 @@ def get_tracks_without_comment_lines(playlist_content: str) -> List[str]:
     return only_tracks
 
 
-def get_playlist_for_vlc_android(path: Path) -> Tuple[str, str]:
-    """Return coverted playlist and its encoding."""
+def get_full_content_of_playlist(path: Path) -> Tuple[str, str]:
+    """Return full content (text) of a playlist."""
     encoding = _detect_file_encoding(path)
     playlist_content = path.read_text(encoding=encoding)
+    return playlist_content, encoding
 
+
+def get_playlist_for_vlc_android(path: Path) -> Tuple[str, str]:
+    """Return coverted playlist and its encoding."""
+    playlist_content, encoding = get_full_content_of_playlist(path)
+    relative_playlist = make_relatives_paths_in_playlist(playlist_content)
+    # VLC for Android player does NOT understand square brackets [] and # in filenames
+    adapted_content = substitute_vlc_invalid_characters(relative_playlist)
+    return adapted_content, encoding
+
+
+def make_relatives_paths_in_playlist(content: str) -> str:
+    """Remain only filenames from absolute paths."""
     # Pattern for matching line into two groups:
     # group 1 - all text before last backward or forward slash (including it)
     # group 2 - filename (with extension)
     regex_pattern = r"(.*[\\|\/])(.*)"
-
-    relative_playlist = re.sub(regex_pattern, r"\2", playlist_content)
-
-    # VLC for Android player does NOT understand square brackets [] and # in filenames
-    adapted_content = substitute_vlc_invalid_characters(relative_playlist)
-
-    return adapted_content, encoding
+    relative_playlist = re.sub(regex_pattern, r"\2", content)
+    return relative_playlist
 
 
 def substitute_vlc_invalid_characters(content: str) -> str:
@@ -68,3 +76,25 @@ def substitute_vlc_invalid_characters(content: str) -> str:
         adapted_content += line + "\n"
 
     return adapted_content
+
+
+def save_playlist_content(
+    content: str,
+    dest: Path,
+    encoding: Optional[str] = None,
+    origin: Optional[Path] = None,
+) -> None:
+    """Save playlist content to new destination."""
+    target_pls: Path
+    if encoding is None:
+        encoding = "utf-8"
+    if Path(dest).is_dir() and origin is not None:
+        target_pls = Path(dest) / origin.name
+    else:
+        target_pls = Path(dest)
+    if target_pls == origin:
+        suffix = target_pls.suffix
+        new_name = str(target_pls.resolve().with_suffix("")) + "_vlc" + suffix
+        target_pls = Path(new_name)
+
+    target_pls.write_text(content, encoding)

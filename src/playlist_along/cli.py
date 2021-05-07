@@ -94,9 +94,4 @@ def convert(pls_obj: Playlist, dest: str, copy: bool) -> None:
 def convert_from_aimp_to_vlc_android(file: Path, dest: str, copy: bool) -> None:
     """Converts AIMP playlist to VLC for Android."""
     converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
-    target_pls: Path
-    if Path(dest).is_dir:
-        target_pls = Path(dest) / file.name
-    else:
-        target_pls = dest
-    target_pls.write_text(converted_pls, encoding)
+    playlist.save_playlist_content(converted_pls, Path(dest), encoding, file)
