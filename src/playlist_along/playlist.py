@@ -92,9 +92,10 @@ def save_playlist_content(
         target_pls = Path(dest) / origin.name
     else:
         target_pls = Path(dest)
-    if target_pls == origin:
-        suffix = target_pls.suffix
-        new_name = str(target_pls.resolve().with_suffix("")) + "_vlc" + suffix
-        target_pls = Path(new_name)
+    if origin:
+        if target_pls.resolve() == origin.resolve():
+            suffix = target_pls.suffix
+            new_name = str(target_pls.resolve().with_suffix("")) + "_vlc" + suffix
+            target_pls = Path(new_name)
 
     target_pls.write_text(content, encoding)
