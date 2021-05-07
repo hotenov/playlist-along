@@ -1,4 +1,6 @@
 """Unit-tests for the console module."""
+from pathlib import Path
+
 from click.testing import CliRunner, Result
 
 from playlist_along.cli import cli
@@ -63,3 +65,21 @@ def test_cli_prints_tracklist_with_display(runner: CliRunner) -> None:
 
         result = runner.invoke(cli, ["--file", "tiny.m3u", "display"])
         assert result.output == "First track!.flac\nSecond Track!.mp3\n"
+
+
+def test_cli_converts_tracklist_for_vlc(runner: CliRunner) -> None:
+    """It saves converted playlist with relative paths and with valid characters."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """D:\\tmp\\tmp_flack\\First [track!].flac
+            /home/user/Downloads/#Second Track!.mp3
+            """
+            )
+        temp_folder = Path("temp.m3u").resolve().parent
+        target_file = temp_folder / "coverted.m3u"
+        runner.invoke(
+            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_file)]
+        )
+        result = runner.invoke(cli, ["--file", str(target_file), "display"])
+        assert result.output == "First %5Btrack!%5D.flac\n%23Second Track!.mp3\n"
