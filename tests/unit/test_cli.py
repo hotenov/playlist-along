@@ -83,3 +83,50 @@ def test_cli_converts_tracklist_for_vlc(runner: CliRunner) -> None:
         )
         result = runner.invoke(cli, ["--file", str(target_file), "display"])
         assert result.output == "First %5Btrack!%5D.flac\n%23Second Track!.mp3\n"
+
+
+def test_cli_saves_playlist_with_same_name_for_folder(runner: CliRunner) -> None:
+    """It saves converted playlist with the same filename.
+
+    If destination option was passed as folder.
+    """
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """D:\\tmp\\tmp_flack\\First [track!].flac
+            /home/user/Downloads/#Second Track!.mp3
+            """
+            )
+        temp_folder = Path("temp.m3u").resolve().parent
+
+        target_dest = temp_folder / "sub"
+        target_dest.mkdir()
+        runner.invoke(
+            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_dest)]
+        )
+        saved_file = temp_folder / "sub" / "temp.m3u"
+        result = runner.invoke(cli, ["--file", str(saved_file), "display"])
+        assert result.output == "First %5Btrack!%5D.flac\n%23Second Track!.mp3\n"
+
+
+def test_cli_saves_playlist_with_different_name(runner: CliRunner) -> None:
+    """It saves converted playlist with auto added '_vlc'.
+
+    If destination file and origin playlist are the same.
+    """
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """D:\\tmp\\tmp_flack\\First [track!].flac
+            /home/user/Downloads/#Second Track!.mp3
+            """
+            )
+        temp_folder = Path("temp.m3u").resolve().parent
+
+        target_file = temp_folder / "temp.m3u"
+        runner.invoke(
+            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_file)]
+        )
+        saved_file = temp_folder / "temp_vlc.m3u"
+        result = runner.invoke(cli, ["--file", str(saved_file), "display"])
+        assert result.output == "First %5Btrack!%5D.flac\n%23Second Track!.mp3\n"
