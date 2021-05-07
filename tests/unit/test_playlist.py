@@ -7,7 +7,7 @@ from playlist_along import playlist
 
 
 def test_playlist_passing_cyrillic_encoding(runner: CliRunner) -> None:
-    """It prints tracklist of playlist with 'display' command."""
+    """It prints tracklist with 'cp1251' encoding."""
     with runner.isolated_filesystem():
         with open("tiny.m3u", "w", encoding="cp1251") as f:
             f.write(
