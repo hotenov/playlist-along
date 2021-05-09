@@ -55,7 +55,7 @@ def test_playlist_fails_on_writing_with_wrong_path_error() -> None:
     content = "ClickException if The filename, directory name, or volume label syntax is incorrect."
     dest = Path('="WrongPath.m3u"')
     with pytest.raises(ClickException) as exc_info:
-        _ = playlist.save_playlist_content(content, dest)
+        playlist.save_playlist_content(content, dest)
     assert exc_info.typename == "ClickException"
 
 
@@ -69,5 +69,5 @@ def test_playlist_fails_on_writing_with_permission_error(runner: CliRunner) -> N
 
         with pytest.raises(ClickException) as exc_info:
             # Try to write to a folder
-            _ = playlist.save_playlist_content(content, temp_folder)
+            playlist.save_playlist_content(content, temp_folder)
         assert exc_info.typename == "ClickException"
