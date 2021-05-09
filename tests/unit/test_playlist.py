@@ -26,12 +26,12 @@ def test_playlist_passing_cyrillic_encoding(runner: CliRunner) -> None:
 
 @pytest.fixture
 def mock_pathlib_write_text(mocker: MockFixture) -> Mock:
-    """Fixture for mocking wikipedia.random_page."""
+    """Fixture for mocking pathlib.Path.write_text."""
     pathlib_write_text: Mock = mocker.patch("pathlib.Path.write_text")
     return pathlib_write_text
 
 
-def test_saving_playlist_with__default_encoding(
+def test_saving_playlist_with_default_encoding(
     runner: CliRunner,
     mock_pathlib_write_text: Mock,
 ) -> None:
