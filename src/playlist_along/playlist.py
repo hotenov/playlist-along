@@ -3,6 +3,8 @@ from pathlib import Path
 import re
 from typing import List, Optional, Tuple
 
+from click import ClickException
+
 from ._utils import _detect_file_encoding
 
 
@@ -88,14 +90,19 @@ def save_playlist_content(
     target_pls: Path
     if encoding is None:
         encoding = "utf-8"
-    if Path(dest).is_dir() and origin is not None:
-        target_pls = Path(dest) / origin.name
-    else:
-        target_pls = Path(dest)
-    if origin:
-        if target_pls.resolve() == origin.resolve():
-            suffix = target_pls.suffix
-            new_name = str(target_pls.resolve().with_suffix("")) + "_vlc" + suffix
-            target_pls = Path(new_name)
+    try:
+        if Path(dest).is_dir() and origin is not None:
+            target_pls = Path(dest) / origin.name
+        else:
+            target_pls = Path(dest)
+        if origin:
+            if target_pls.resolve() == origin.resolve():
+                suffix = target_pls.suffix
+                new_name = str(target_pls.resolve().with_suffix("")) + "_vlc" + suffix
+                target_pls = Path(new_name)
 
-    target_pls.write_text(content, encoding)
+        target_pls.parent.mkdir(parents=True, exist_ok=True)
+        target_pls.write_text(content, encoding)
+    except (OSError) as error:
+        message = str(error)
+        raise ClickException(message)
