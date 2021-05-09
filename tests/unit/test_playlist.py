@@ -2,6 +2,7 @@
 from pathlib import Path
 from unittest.mock import Mock
 
+from click import ClickException
 from click.testing import CliRunner
 import pytest
 from pytest_mock import MockFixture
@@ -47,3 +48,26 @@ def test_saving_playlist_with__default_encoding(
         temp_content = Path("temp.m3u").read_text()
         playlist.save_playlist_content(temp_content, target_file)
         mock_pathlib_write_text.assert_called_once_with(temp_content, "utf-8")
+
+
+def test_playlist_fails_on_writing_with_wrong_path_error() -> None:
+    """It raises ClickException if the playlist writing fails with wrong path."""
+    content = "ClickException if The filename, directory name, or volume label syntax is incorrect."
+    dest = Path('="WrongPath.m3u"')
+    with pytest.raises(ClickException) as exc_info:
+        _ = playlist.save_playlist_content(content, dest)
+    assert exc_info.typename == "ClickException"
+
+
+def test_playlist_fails_on_writing_with_permission_error(runner: CliRunner) -> None:
+    """It raises ClickException if the playlist writing fails with 'Permission denied'."""
+    content = "ClickException if Permission denied:"
+    with runner.isolated_filesystem():
+        temp_folder = Path("folder.m3u").resolve()
+        # Create a folder, not a file
+        temp_folder.mkdir(parents=True, exist_ok=True)
+
+        with pytest.raises(ClickException) as exc_info:
+            # Try to write to a folder
+            _ = playlist.save_playlist_content(content, temp_folder)
+        assert exc_info.typename == "ClickException"
