@@ -71,3 +71,36 @@ def test_playlist_fails_on_writing_with_permission_error(runner: CliRunner) -> N
             # Try to write to a folder
             playlist.save_playlist_content(content, temp_folder)
         assert exc_info.typename == "ClickException"
+
+
+@pytest.fixture
+def mock_playlist_detect_file_encoding(mocker: MockFixture) -> Mock:
+    """Fixture for mocking _detect_file_encoding called from playlist."""
+    detect_file_encoding: Mock = mocker.patch(
+        "playlist_along.playlist._detect_file_encoding"
+    )
+    return detect_file_encoding
+
+
+def test_playlist_fails_on_reading_error(
+    runner: CliRunner,
+    mock_playlist_detect_file_encoding: Mock,
+) -> None:
+    """It raises ClickException if the playlist reading fails.
+
+    Even after successful encoding detection.
+    """
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """D:\\tmp\\tmp_flack\\First [track!].flac
+            /home/user/Downloads/#Second Track!.mp3
+            """
+            )
+        temp_file = Path("temp.m3u").resolve()
+        mock_playlist_detect_file_encoding.return_value = "utf-8"
+        # Delete file
+        temp_file.unlink()
+        with pytest.raises(ClickException) as exc_info:
+            playlist.get_full_content_of_playlist(temp_file)
+        assert exc_info.typename == "ClickException"
