@@ -104,3 +104,13 @@ def test_playlist_fails_on_reading_error(
         with pytest.raises(ClickException) as exc_info:
             playlist.get_full_content_of_playlist(temp_file)
         assert exc_info.typename == "ClickException"
+
+
+def test_playlist_substitutes_invalid_characters() -> None:
+    """It substitutes [ and ] and # in passed text."""
+    text = """Track - [01].mp3
+    #Track# - 02].flac
+    """
+    substituted = playlist.substitute_vlc_invalid_characters(text)
+    expected = "Track - %5B01%5D.mp3\n%23Track%23 - 02%5D.flac\n\n"
+    assert expected == substituted
