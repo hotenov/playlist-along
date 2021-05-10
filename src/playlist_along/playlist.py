@@ -91,7 +91,7 @@ def substitute_vlc_invalid_characters(content: str) -> str:
             line = re.sub(r"[\[]", "%5B", line)
             line = re.sub(r"[\]]", "%5D", line)
             line = re.sub(r"[#]", "%23", line)
-        adapted_content += line + "\n"
+        adapted_content += line.strip() + "\n"
 
     return adapted_content
 
@@ -107,10 +107,10 @@ def save_playlist_content(
     if encoding is None:
         encoding = "utf-8"
     try:
-        if Path(dest).is_dir() and origin is not None:
-            target_pls = Path(dest) / origin.name
+        if not dest.suffix and origin:
+            target_pls = dest / origin.name
         else:
-            target_pls = Path(dest)
+            target_pls = dest
         if origin:
             if target_pls.resolve() == origin.resolve():
                 suffix = target_pls.suffix
