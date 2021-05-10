@@ -1,8 +1,10 @@
 """Playlist module."""
 from pathlib import Path
 import re
+import shutil
 from typing import List, Optional, Tuple
 
+import click
 from click import ClickException
 
 from ._utils import _detect_file_encoding
@@ -26,16 +28,16 @@ def get_only_track_paths_from_m3u(
     if encoding is None:
         encoding = _detect_file_encoding(path)
     playlist_content = path.read_text(encoding=encoding)
-    only_paths = get_tracks_without_comment_lines(playlist_content)
+    only_paths = get_local_tracks_without_comment_lines(playlist_content)
     return only_paths
 
 
-def get_tracks_without_comment_lines(playlist_content: str) -> List[str]:
+def get_local_tracks_without_comment_lines(playlist_content: str) -> List[str]:
     """Return list of tracks."""
     only_tracks: List[str] = [
         line.strip()
         for line in playlist_content.splitlines()
-        if Path(line).suffix in SONG_FORMATS
+        if Path(line).suffix in SONG_FORMATS and "://" not in line
     ]
     return only_tracks
 
@@ -54,10 +56,20 @@ def get_full_content_of_playlist(path: Path) -> Tuple[str, str]:
 def get_playlist_for_vlc_android(path: Path) -> Tuple[str, str]:
     """Return coverted playlist and its encoding."""
     playlist_content, encoding = get_full_content_of_playlist(path)
+    playlist_content = clean_m3u_from_links(playlist_content)
     relative_playlist = make_relatives_paths_in_playlist(playlist_content)
     # VLC for Android player does NOT understand square brackets [] and # in filenames
     adapted_content = substitute_vlc_invalid_characters(relative_playlist)
     return adapted_content, encoding
+
+
+def clean_m3u_from_links(content: str) -> str:
+    """Delete lines with any links."""
+    lines_without_links = [
+        line.strip() for line in content.splitlines() if "://" not in line
+    ]
+    clean_content: str = "\n".join(lines_without_links)
+    return clean_content
 
 
 def make_relatives_paths_in_playlist(content: str) -> str:
@@ -110,3 +122,23 @@ def save_playlist_content(
     except (OSError) as error:
         message = str(error)
         raise ClickException(message)
+
+
+def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
+    """Copy local files from list to a new destination."""
+    destination: Path = Path(dest)
+    missing_files: List[str] = []
+    file_destination: Path
+    if not destination.is_dir():
+        destination = destination.parent
+    for abs_path in tracklist:
+        if not Path(abs_path).exists():
+            missing_files.append(abs_path)
+        else:
+            name_only = Path(abs_path).name
+            file_destination = destination / name_only
+            if not file_destination.exists():
+                shutil.copy2(Path(abs_path), destination)
+    if missing_files:
+        click.echo("Missing files from playlist were NOT copied:")
+        click.echo("\n".join(missing_files))

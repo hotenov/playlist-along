@@ -1,6 +1,6 @@
 """CLI commands and functions."""
 from pathlib import Path
-from typing import Any, Optional, Union
+from typing import Any, List, Optional, Union
 
 import click
 from click import Context, Option, Parameter
@@ -88,10 +88,19 @@ def display(pls_obj: Playlist) -> None:
 def convert(pls_obj: Playlist, dest: str, copy: bool) -> None:
     """Converts playlist from one player to another."""
     file: Path = pls_obj.path
-    convert_from_aimp_to_vlc_android(file, dest, copy)
+    convert_from_aimp_to_vlc_android(file, dest)
+    if copy:
+        copy_files_from_playlist_to_destination_folder(file, dest)
 
 
-def convert_from_aimp_to_vlc_android(file: Path, dest: str, copy: bool) -> None:
+def convert_from_aimp_to_vlc_android(file: Path, dest: str) -> None:
     """Converts AIMP playlist to VLC for Android."""
     converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
     playlist.save_playlist_content(converted_pls, Path(dest), encoding, file)
+
+
+def copy_files_from_playlist_to_destination_folder(file: Path, dest: str) -> None:
+    """Copy tracks from playlist to folder with converted playlist."""
+    content, encoding = playlist.get_full_content_of_playlist(file)
+    only_tracks: List[str] = playlist.get_local_tracks_without_comment_lines(content)
+    playlist.copy_local_tracks_to_folder(only_tracks, dest)
