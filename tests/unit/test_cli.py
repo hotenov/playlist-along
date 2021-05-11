@@ -1,7 +1,10 @@
 """Unit-tests for the console module."""
 from pathlib import Path
+from unittest.mock import Mock
 
 from click.testing import CliRunner, Result
+import pytest
+from pytest_mock import MockFixture
 
 from playlist_along.cli import cli
 
@@ -245,3 +248,35 @@ def test_cli_dest_with_dot_is_file_by_default(runner: CliRunner) -> None:
         target_playlist = Path(temp_folder / "sub" / "file.txt").read_text()
         expected = "Track 01.mp3\nTrack 02.mp3\nTrack 03.flac\n"
         assert expected == target_playlist
+
+
+@pytest.fixture
+def mock_shutil_copy2(mocker: MockFixture) -> Mock:
+    """Fixture for mocking shutil.copy2."""
+    shutil_copy2: Mock = mocker.patch("shutil.copy2")
+    return shutil_copy2
+
+
+def test_cli_fails_on_copy_error(
+    runner: CliRunner,
+    mock_shutil_copy2: Mock,
+) -> None:
+    """It exits with a non-zero status code if the copying fails."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """Track 01.mp3
+            Track 02.mp3
+            Track 03.flac
+            """
+            )
+        temp_folder = Path("temp.m3u").resolve().parent
+        Path(temp_folder / "Track 01.mp3").write_text("Here are music bytes")
+        target_dest = temp_folder / "sub"
+
+        mock_shutil_copy2.side_effect = OSError
+        result = runner.invoke(
+            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_dest), "--copy"]
+        )
+        assert result.exit_code == 1
+        assert "Error" in result.output
