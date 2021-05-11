@@ -53,7 +53,7 @@ def test_saving_playlist_with_default_encoding(
 def test_playlist_fails_on_writing_with_wrong_path_error() -> None:
     """It raises ClickException if the playlist writing fails with wrong path."""
     content = "ClickException if The filename, directory name, or volume label syntax is incorrect."
-    dest = Path('="WrongPath.m3u"')
+    dest = Path("/::WrongPath.m3u")
     with pytest.raises(ClickException) as exc_info:
         playlist.save_playlist_content(content, dest)
     assert exc_info.typename == "ClickException"
