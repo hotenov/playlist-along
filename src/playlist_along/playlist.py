@@ -138,7 +138,11 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
             name_only = Path(abs_path).name
             file_destination = destination / name_only
             if not file_destination.exists():
-                shutil.copy2(Path(abs_path), destination)
+                try:
+                    shutil.copy2(Path(abs_path), destination)
+                except (OSError) as error:
+                    message = str(error)
+                    raise ClickException(message)
     if missing_files:
         click.echo("Missing files from playlist were NOT copied:")
         click.echo("\n".join(missing_files))
