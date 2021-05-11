@@ -101,13 +101,14 @@ def save_playlist_content(
     dest: Path,
     encoding: Optional[str] = None,
     origin: Optional[Path] = None,
+    explicit_dir: Optional[bool] = None,
 ) -> None:
     """Save playlist content to new destination."""
     target_pls: Path
     if encoding is None:
         encoding = "utf-8"
     try:
-        if not dest.suffix and origin:
+        if (not dest.suffix or explicit_dir) and origin:
             target_pls = dest / origin.name
         else:
             target_pls = dest

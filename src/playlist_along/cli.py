@@ -84,19 +84,27 @@ def display(pls_obj: Playlist) -> None:
     is_flag=True,
     help="Copy files from playlist.",
 )
+@click.option(
+    "--dir",
+    "explicit_dir",
+    is_flag=True,
+    help="Tells script that destination is a dir, not a file (for directory name with '.' dot).",
+)
 @pass_playlist
-def convert(pls_obj: Playlist, dest: str, copy: bool) -> None:
+def convert(pls_obj: Playlist, dest: str, explicit_dir: bool, copy: bool) -> None:
     """Converts playlist from one player to another."""
     file: Path = pls_obj.path
-    convert_from_aimp_to_vlc_android(file, dest)
+    convert_from_aimp_to_vlc_android(file, dest, explicit_dir)
     if copy:
         copy_files_from_playlist_to_destination_folder(file, dest)
 
 
-def convert_from_aimp_to_vlc_android(file: Path, dest: str) -> None:
+def convert_from_aimp_to_vlc_android(file: Path, dest: str, explicit_dir: bool) -> None:
     """Converts AIMP playlist to VLC for Android."""
     converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
-    playlist.save_playlist_content(converted_pls, Path(dest), encoding, file)
+    playlist.save_playlist_content(
+        converted_pls, Path(dest), encoding, file, explicit_dir
+    )
 
 
 def copy_files_from_playlist_to_destination_folder(file: Path, dest: str) -> None:
