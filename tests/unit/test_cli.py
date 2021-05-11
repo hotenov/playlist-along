@@ -280,3 +280,33 @@ def test_cli_fails_on_copy_error(
         )
         assert result.exit_code == 1
         assert "Error" in result.output
+
+
+def test_cli_copies_files_into_folder_with_dot(runner: CliRunner) -> None:
+    """It copies files to destination folder with dot.
+
+    Test how is '--dir' option work.
+    """
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write(
+                """Track 01.mp3
+            Track 02.mp3
+            Track 03.flac
+            """
+            )
+        temp_folder = Path("temp.m3u").resolve().parent
+        # Create these files
+        Path(temp_folder / "Track 01.mp3").write_text("Here are music bytes")
+        Path(temp_folder / "Track 02.mp3").write_text("Here are music bytes")
+        Path(temp_folder / "Track 03.flac").write_text("Here are music bytes")
+        target_dest = temp_folder / "sub.m3u"
+        runner.invoke(
+            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_dest), "--copy", "--dir"]
+        )
+        # Compare files in folders
+        origin_dir = [
+            child.name for child in temp_folder.iterdir() if not child.is_dir()
+        ]
+        converted_dir = [child.name for child in target_dest.iterdir()]
+        assert origin_dir == converted_dir
