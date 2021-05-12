@@ -91,3 +91,7 @@
 - name: cosmetic
   color: 64B4D4
   description: Cosmetic bug severity
+# Excluding labels
+- name: release-pr
+  color: 5B8386
+  description: PR with bumping new version
