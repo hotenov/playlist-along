@@ -26,7 +26,7 @@ def test_cli_fails_for_unsupported_format(runner: CliRunner) -> None:
 def test_cli_fails_without_file_argument(runner: CliRunner) -> None:
     """It fails if -f option has no argument."""
     result = runner.invoke(cli, ["-f"])
-    assert "Error: -f option requires an argument" in result.output
+    assert "Error: Option '-f' requires an argument" in result.output
 
 
 def test_cli_exits_when_no_file_pass(runner: CliRunner) -> None:
@@ -183,8 +183,8 @@ def test_cli_prints_missing_files_after_coping(runner: CliRunner) -> None:
         result_lines = str(result.output).splitlines()
         line_1 = "Missing files from playlist were NOT copied:"
         missing_name = "Track 02.mp3"
-        assert line_1 == result_lines[0]
-        assert missing_name == result_lines[1]
+        assert line_1 == result_lines[1]
+        assert missing_name == result_lines[2]
 
 
 def test_cli_copies_only_absent_files_by_default(runner: CliRunner) -> None:
