@@ -736,7 +736,7 @@ requests = "*"
 
 [[package]]
 name = "single-source"
-version = "0.1.5"
+version = "0.2.0"
 description = "Access to the project version in Python code for PEP 621-style projects"
 category = "main"
 optional = false
@@ -1033,7 +1033,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "a966ed52f5143ef5fc27ab12ea8173ee13963b7b2b2462cd1d4f710118c5b806"
+content-hash = "3ab23892ccf2208e652a182c2829c9474dadf261f777e48676dd918be3d36b19"
 
 [metadata.files]
 aiocontextvars = [
@@ -1488,8 +1488,8 @@ safety = [
     {file = "safety-1.10.3.tar.gz", hash = "sha256:30e394d02a20ac49b7f65292d19d38fa927a8f9582cdfd3ad1adbbc66c641ad5"},
 ]
 single-source = [
-    {file = "single-source-0.1.5.tar.gz", hash = "sha256:61b5c04e558fa73ac725b9fbdfb24027845533d99ca72e225efd5810dc261483"},
-    {file = "single_source-0.1.5-py3-none-any.whl", hash = "sha256:cc4574d4b62ae88230dc21a468017b9a25aacd41e2b16686ee8ec529f219f254"},
+    {file = "single-source-0.2.0.tar.gz", hash = "sha256:f40f94c7f2e72c854b9c0c6f7d6b545d74ada9ebd454f9f07f8fb743b22bccf5"},
+    {file = "single_source-0.2.0-py3-none-any.whl", hash = "sha256:82c55b00515a30c8f7c262b986a399ca023911ebb6a86f0953d4c50448c36b16"},
 ]
 six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
