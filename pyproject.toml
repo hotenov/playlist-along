@@ -49,7 +49,7 @@ pytest-datafiles = "^2.0"
 pytest-mock = "^3.6.0"
 
 [tool.poetry.scripts]
-playlist-along = "playlist_along.__main__:main"
+playlist-along = "playlist_along.cli:cli"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

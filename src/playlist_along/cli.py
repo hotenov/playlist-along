@@ -110,3 +110,7 @@ def copy_files_from_playlist_to_destination_folder(file: Path, dest: str) -> Non
     content, encoding = playlist.get_full_content_of_playlist(file)
     only_tracks: List[str] = playlist.get_local_tracks_without_comment_lines(content)
     playlist.copy_local_tracks_to_folder(only_tracks, dest)
+
+
+if __name__ == "__main__":
+    cli()  # pragma: no cover
