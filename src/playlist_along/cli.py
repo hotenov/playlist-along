@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, List, Optional, Union
 
 import click
-from click import Context, Option, Parameter
+from click.core import Context, Option, Parameter
 
 from playlist_along import __version__
 from . import playlist
@@ -11,13 +11,13 @@ from .playlist import Playlist
 
 
 # Decorator for passing path to playlist file
-pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+pass_playlist = click.decorators.make_pass_decorator(Playlist, ensure=True)
 
 
 def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
     """Display only tracks from playlist file via click.echo()."""
     only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
-    click.echo("\n".join(only_paths))
+    click.utils.echo("\n".join(only_paths))
 
 
 def validate_file_callback(
@@ -31,17 +31,17 @@ def validate_file_callback(
     if Path(value).suffix in supported_formats:
         return value
     else:
-        raise click.BadParameter(
+        raise click.exceptions.BadParameter(
             "currently we are supporting only these formats: %s" % supported_formats
         )
 
 
-@click.group(
+@click.decorators.group(
     invoke_without_command=True,
     no_args_is_help=True,
 )
-@click.version_option(version=__version__)
-@click.option(
+@click.decorators.version_option(version=__version__)
+@click.decorators.option(
     "--file",
     "-f",
     type=str,
@@ -50,7 +50,7 @@ def validate_file_callback(
     help="Full path to playlist file.",
     metavar="<string>",
 )
-@click.pass_context
+@click.decorators.pass_context
 def cli(ctx: Context, file: str) -> None:
     """Playlist Along - a CLI for playlist processing."""
     ctx.obj = Playlist(file)
@@ -72,19 +72,19 @@ def display(pls_obj: Playlist) -> None:
 
 
 @cli.command()
-@click.option(
+@click.decorators.option(
     "--dest",
     "-d",
     type=str,
     help="Directory or full path to playlist destination.",
     metavar="<string>",
 )
-@click.option(
+@click.decorators.option(
     "--copy",
     is_flag=True,
     help="Copy files from playlist.",
 )
-@click.option(
+@click.decorators.option(
     "--dir",
     "yes_dir",
     is_flag=True,
@@ -102,9 +102,7 @@ def convert(pls_obj: Playlist, dest: str, yes_dir: bool, copy: bool) -> None:
 def convert_from_aimp_to_vlc_android(file: Path, dest: str, yes_dir: bool) -> None:
     """Converts AIMP playlist to VLC for Android."""
     converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
-    playlist.save_playlist_content(
-        converted_pls, Path(dest), encoding, file, yes_dir
-    )
+    playlist.save_playlist_content(converted_pls, Path(dest), encoding, file, yes_dir)
 
 
 def copy_files_from_playlist_to_destination_folder(file: Path, dest: str) -> None:
