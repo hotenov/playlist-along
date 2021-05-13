@@ -132,7 +132,7 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
     file_destination: Path
     if not destination.is_dir():
         destination = destination.parent
-    with click.progressbar(
+    with click.termui.progressbar(
         tracklist,
         label="Copying from playlist:",
     ) as bar:
@@ -149,5 +149,5 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
                         message = str(error)
                         raise ClickException(message)
     if missing_files:
-        click.echo("Missing files from playlist were NOT copied:")
-        click.echo("\n".join(missing_files))
+        click.utils.echo("Missing files from playlist were NOT copied:")
+        click.utils.echo("\n".join(missing_files))
