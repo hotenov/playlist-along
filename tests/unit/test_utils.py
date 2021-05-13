@@ -2,7 +2,7 @@
 from pathlib import Path
 from unittest.mock import Mock
 
-import click
+from click.exceptions import ClickException
 import pytest
 from pytest_mock import MockFixture
 
@@ -23,11 +23,11 @@ def test_util_fails_on_encoding_detection_error(
 ) -> None:
     """It raises ClickException if the encoding detection fails."""
     mock__detect_file_encoding.side_effect = OSError
-    with pytest.raises(click.ClickException) as exc_info:
+    with pytest.raises(ClickException) as exc_info:
         _ = _detect_file_encoding(Path("AnyPath.m3u"))
     assert exc_info.typename == "ClickException"
 
     mock__detect_file_encoding.side_effect = AttributeError
-    with pytest.raises(click.ClickException) as exc_info:
+    with pytest.raises(ClickException) as exc_info:
         _ = _detect_file_encoding(Path("AnyPath.m3u"))
     assert exc_info.typename == "ClickException"

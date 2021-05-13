@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from charset_normalizer import CharsetNormalizerMatches as CnM
-import click
+from click.exceptions import ClickException
 
 
 def _detect_file_encoding(path: Path) -> str:
@@ -40,4 +40,4 @@ def _detect_file_encoding(path: Path) -> str:
         return encoding
     except (OSError, AttributeError) as error:
         message = str(error)
-        raise click.ClickException(message)
+        raise ClickException(message)

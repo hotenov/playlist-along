@@ -5,7 +5,7 @@ import shutil
 from typing import List, Optional, Tuple
 
 import click
-from click import ClickException
+from click.exceptions import ClickException
 
 from ._utils import _detect_file_encoding
 
