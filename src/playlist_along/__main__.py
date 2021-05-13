@@ -7,7 +7,7 @@ from .cli import cli
 
 def main() -> Any:
     """Return CLI click group."""
-    return cli(obj={})  # pragma: no cover
+    return cli()  # pragma: no cover
 
 
 if __name__ == "__main__":

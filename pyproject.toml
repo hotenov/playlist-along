@@ -20,7 +20,7 @@ Changelog = "https://github.com/hotenov/playlist-along/releases"
 
 [tool.poetry.dependencies]
 python = "^3.6.1"
-click = "^7.0"
+click = "^8.0.0"
 charset-normalizer = "^1.3.6"
 single-source = "^0.1.5"
 
@@ -42,7 +42,6 @@ flake8-rst-docstrings = "^0.0.14"
 pep8-naming = "^0.11.1"
 darglint = "^1.8.0"
 sphinx-rtd-theme = "^0.5.2"
-sphinx-click = "^2.7.1"
 Pygments = "^2.8.1"
 flake8-import-order = "^0.18.1"
 flake8-black = "^0.2.1"
@@ -50,7 +49,7 @@ pytest-datafiles = "^2.0"
 pytest-mock = "^3.6.0"
 
 [tool.poetry.scripts]
-playlist-along = "playlist_along.__main__:main"
+playlist-along = "playlist_along.cli:cli"
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]

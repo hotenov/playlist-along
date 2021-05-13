@@ -5,7 +5,7 @@ import shutil
 from typing import List, Optional, Tuple
 
 import click
-from click import ClickException
+from click.exceptions import ClickException
 
 from ._utils import _detect_file_encoding
 
@@ -132,11 +132,11 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
     file_destination: Path
     if not destination.is_dir():
         destination = destination.parent
-    with click.progressbar(
+    with click.termui.progressbar(
         tracklist,
         label="Copying from playlist:",
     ) as bar:
-        for abs_path in bar:
+        for abs_path in bar:  # type: ignore[attr-defined]
             if not Path(abs_path).exists():
                 missing_files.append(abs_path)
             else:
@@ -149,5 +149,5 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
                         message = str(error)
                         raise ClickException(message)
     if missing_files:
-        click.echo("Missing files from playlist were NOT copied:")
-        click.echo("\n".join(missing_files))
+        click.utils.echo("Missing files from playlist were NOT copied:")
+        click.utils.echo("\n".join(missing_files))
