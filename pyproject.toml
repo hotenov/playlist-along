@@ -21,7 +21,7 @@ Changelog = "https://github.com/hotenov/playlist-along/releases"
 [tool.poetry.dependencies]
 python = "^3.6.1"
 click = "^8.0.0"
-charset-normalizer = "^1.3.6"
+charset-normalizer = "^1.3.9"
 single-source = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
