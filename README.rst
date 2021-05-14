@@ -7,8 +7,8 @@ Playlist Along
 
 |Black|
 
-.. |Status| image:: https://badgen.net/badge/status/alpha/d8624d
-   :target: https://badgen.net/badge/status/alpha/d8624d
+.. |Status| image:: https://raster.shields.io/badge/Status-alpha-orange
+   :target: https://raster.shields.io/badge/Status-alpha-orange
    :alt: Project Status
 .. |PyPI| image:: https://img.shields.io/pypi/v/playlist-along.svg
    :target: https://pypi.org/project/playlist-along/
