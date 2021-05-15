@@ -36,14 +36,28 @@ Playlist Along
 Features
 --------
 
-* Different CLI utils for m3u playlists
-* TBD
-
+*  Conversion from **AIMP** *(desktop)* .m3u / .m3u8 playlists
+   into playlists suitable for playback in **VLC for Android**
+   (with relative paths,
+   replaced square brackets ``[`` ``]`` and *hash* ``#`` 
+   in songs filenames)
+*  Copying songs from .m3u / .m3u8 playlists into destination folder
+   (after playlist conversion and only **.mp3** and **.flac** local files, for now)
+*  Displaying only tracks from playlist
+   *(without M3U tag lines / comments)*
+*  **TBD:** Displaying a full content of playlist file
+*  **TBD:** Creating a playlist from tracks in specified folder
+   (with relative or absolute paths)
+*  **TBD:** Injecting (appending) one playlist into another 
+   (top or bottom)
+*  **TBD:** Creating an empty playlist file
+*  **TBD:** Copying and conversion paths to relative, without replacing characters
+   ("make relative playlist")
 
 Requirements
 ------------
 
-* TODO
+* Python 3.6.2 and higher
 
 
 Installation
@@ -65,7 +79,10 @@ Please see the `Command-line Reference <Usage_>`_ for details.
 Contributing
 ------------
 
-Contributions are very welcome.
+If you want to suggest a new feature or to ask questions about this project,
+you can open a `new discussion <https://github.com/hotenov/playlist-along/discussions/new>`_.
+
+Want to implement or fix something? - contributions are very welcome.
 To learn more, see the `Contributor Guide`_.
 
 
@@ -80,7 +97,8 @@ Issues
 ------
 
 If you encounter any problems,
-please `file an issue`_ along with a detailed description.
+please see `project discussions <https://github.com/hotenov/playlist-along/discussions>`_ first 
+or `file an issue`_ along with a detailed description.
 
 
 Credits
@@ -91,7 +109,7 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _MIT license: https://opensource.org/licenses/MIT
-.. _PyPI: https://pypi.org/
+.. _PyPI: https://pypi.org/project/playlist-along/
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _file an issue: https://github.com/hotenov/playlist-along/issues
 .. _pip: https://pip.pypa.io/
