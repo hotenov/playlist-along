@@ -4,7 +4,6 @@ Playlist Along
 |Status| |PyPI| |Python Version| |License|
 
 |Read the Docs| |Tests| |Codecov|
-
 |Black|
 
 .. |Status| image:: https://raster.shields.io/badge/Status-alpha-orange
@@ -73,14 +72,14 @@ You can install *Playlist Along* via pip_ from PyPI_:
 Usage
 -----
 
-Please see the `Command-line Reference <Usage_>`_ for details.
+Please see the `Usage Examples <Usage_>`_ or the `Command-line Reference <Manpage_>`_ for details.
 
 
 Contributing
 ------------
 
 If you want to suggest a new feature or to ask questions about this project,
-you can open a `new discussion <https://github.com/hotenov/playlist-along/discussions/new>`_.
+you can open a `new discussion`_.
 
 Want to implement or fix something? - contributions are very welcome.
 To learn more, see the `Contributor Guide`_.
@@ -97,7 +96,7 @@ Issues
 ------
 
 If you encounter any problems,
-please see `project discussions <https://github.com/hotenov/playlist-along/discussions>`_ first 
+please see `project discussions`_ first 
 or `file an issue`_ along with a detailed description.
 
 
@@ -113,6 +112,10 @@ This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _file an issue: https://github.com/hotenov/playlist-along/issues
 .. _pip: https://pip.pypa.io/
+.. _new discussion: https://github.com/hotenov/playlist-along/discussions/new
+.. _project discussions: https://github.com/hotenov/playlist-along/discussions
+
 .. github-only
 .. _Contributor Guide: CONTRIBUTING.rst
 .. _Usage: https://playlist-along.readthedocs.io/en/latest/usage.html
+.. _Manpage: https://playlist-along.readthedocs.io/en/latest/manpage.html

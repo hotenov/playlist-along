@@ -1,6 +1,17 @@
-Usage
-=====
+Usage Examples
+==============
 
-.. click:: playlist_along.__main__:main
-   :prog: playlist-along
-   :nested: full
+Basic
+----------
+
+Displaying tracklist
+~~~~~~~~~~~~~~~~~~~~
+
+Convert for VLC for Android
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Advanced
+----------
+
+Folder with . (dot)
+~~~~~~~~~~~~~~~~~~~
