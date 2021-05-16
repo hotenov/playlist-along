@@ -47,6 +47,7 @@ flake8-import-order = "^0.18.1"
 flake8-black = "^0.2.1"
 pytest-datafiles = "^2.0"
 pytest-mock = "^3.6.0"
+furo = "^2021.4.11-beta.34"
 
 [tool.poetry.scripts]
 playlist-along = "playlist_along.cli:cli"
