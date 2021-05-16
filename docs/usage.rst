@@ -15,7 +15,6 @@ Usage Examples
    And don't afraid Russian songs and Cyrillic paths in examples.
 
 
-
 For current version, it's assumed that you have playlist saved in "AIMP format"
 (i.e. M3U tags and file paths are on separate lines),
 for example:
@@ -39,10 +38,10 @@ or simple playlist file with tracks on each line:
 Basic
 ----------
 
-Displaying tracklist
-~~~~~~~~~~~~~~~~~~~~
+How to display tracklist
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can display (print) in terminal only tracks from your playlist:
+You can display (print) in a terminal only tracks from your playlist:
 
 .. code-block:: bash
 
@@ -54,8 +53,8 @@ or shorter, with the same result:
 
    playlist-along -f "D:\tmp\tmp_m3u\AIMP-example.m3u8"
 
-Convert M3U for VLC for Android
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+How to convert M3U for VLC for Android
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To convert only playlist (without copying files), use this command:
 
@@ -85,6 +84,9 @@ specify a full path for destination:
    script will NOT override your origin playlist.
    Instead of this, it append suffix ``_vlc`` for converted playlist name.
 
+How to convert playlist and copy its audio files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 For copying songs from origin playlist to folder with converted playlist, use option ``--copy``
 
 .. code-block:: bash
@@ -99,8 +101,8 @@ For copying songs from origin playlist to folder with converted playlist, use op
 Advanced
 ----------
 
-Folder with . (dot)
-~~~~~~~~~~~~~~~~~~~
+How to use folder with . (dot)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For saving converted playlist and copying files
 into a folder, containing ``.`` (dot) in its name,
