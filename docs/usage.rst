@@ -12,7 +12,7 @@ Usage Examples
    but all commands should work on Linux and Mac systems
    (with Unix paths, e.g. ``/home/user/Downloads/``).
    Python 3.6.2+ is all what you need on any OS.
-      Also don't afraid Russian songs and Cyrillic paths in examples.
+   And don't afraid Russian songs and Cyrillic paths in examples.
 
 
 
