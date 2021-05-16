@@ -46,7 +46,7 @@ to your Android smartphone and open the playlist
 (or let a player to discover media for you).
 
 Although, there is only one conversion way
-"Desktop AIMP -> VLC for Android" for now, 
+"Desktop `AIMP`_ -> `VLC for Android`_" for now, 
 but who knows what the future holds for us?
 
 🚀 Features
@@ -134,9 +134,11 @@ We use the following packages / libraries under the hood:
 
 * `Click`_, of course (`BSD-3-Clause License <https://github.com/pallets/click/blob/main/LICENSE.rst>`_)
 * `charset_normalizer <https://github.com/Ousret/charset_normalizer>`_, for auto encoding detecting of playlist files (MIT License)
-* `single-source <https://github.com/rabbit72/single-source>`_, for getting project version from everywhere (MIT License)
+* `single-source <https://github.com/rabbit72/single-source>`_, for getting project version from anywhere (MIT License)
 
 
+.. _AIMP: https://www.aimp.ru/
+.. _VLC for Android: https://play.google.com/store/apps/details?id=org.videolan.vlc&hl=en&gl=US
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _MIT license: https://opensource.org/licenses/MIT
