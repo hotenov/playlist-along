@@ -1,7 +1,7 @@
 Why?
 ====
 
-My short (True) story
+My Short (True) Story
 ---------------------
 
 I often use square brackets ``[`` ``]`` in my mp3 filenames.
@@ -31,6 +31,29 @@ Initial Logic
    (tail or the `final path component`_ in 'pathlib')
 *  Then it replaces (substitutes) ``[`` ``]`` ``#`` with ``%5B`` and ``%5D`` and ``%23``
 *  Finally, it saves converted playlist file (with relative paths) by specified destination.
+
+Take a look:
+
+.. tab:: ORIGIN
+
+   .. code:: none
+
+      #EXTM3U
+      #EXTINF:123, Sample artist - Sample title
+      C:\Documents and Settings\I\My Music\Sample with [brackets].mp3
+      #EXTINF:321,Example Artist - Example title
+      C:\Documents and Settings\I\My Music\Greatest Hits\Example #02.mp3
+
+.. tab:: CONVERTED
+
+   .. code:: none
+
+      #EXTM3U
+      #EXTINF:123, Sample artist - Sample title
+      Sample with %5Bbrackets%5D.mp3
+      #EXTINF:321,Example Artist - Example title
+      Example %2302.mp3
+
 
 .. _final path component: https://docs.python.org/3/library/pathlib.html#pathlib.PurePath.name
 
