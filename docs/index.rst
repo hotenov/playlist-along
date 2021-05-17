@@ -11,6 +11,7 @@
 
    Usage Examples <usage>
    Man Page <manpage>
+   truestory
    reference
    contributing
    Code of Conduct <codeofconduct>
