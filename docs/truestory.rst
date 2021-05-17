@@ -17,7 +17,7 @@ Although, many people are suffering (me too). See linked issues and many posts o
 
 "OK, No problem!" - I thought. "I will replace brackets using percent-encoding."
 (also known as URL encoding), i.e. ``%5B`` and ``%5D`` respectively.
-Later I found out that ``#`` sigh also needs to be replaced with ``%23``.
+Later I found out that ``#`` sign also needs to be replaced with ``%23``.
 
 So this project (script) appeared.
 
@@ -26,7 +26,7 @@ So this project (script) appeared.
 Initial Logic
 --------------
 
-*  It takes and read original playlist file with absolute paths.
+*  It takes and read origin playlist file with absolute paths.
 *  Then It cuts absolute (full) file path, leaving only file name
    (tail or the `final path component`_ in 'pathlib')
 *  Then it replaces (substitutes) ``[`` ``]`` ``#`` with ``%5B`` and ``%5D`` and ``%23``
