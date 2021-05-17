@@ -7,33 +7,33 @@ Usage Examples
 
 
 .. important::
-   All examples are written for Windows environment
+   All examples are written for the Windows environment
    (because I mostly use the script on Windows 10),
-   but all commands should work on Linux and Mac systems
+   but all commands should work on the Linux and Mac OS platforms
    (with Unix paths, e.g. ``/home/user/Downloads/``).
-   Python 3.6.2+ is all what you need on any OS.
-   And don't afraid Russian songs and Cyrillic paths in examples.
+   In fact, Python 3.6.2+ is all what you need on any OS.
 
 
-For current version, it's assumed that you have playlist saved in "AIMP format"
-(i.e. M3U tags and file paths are on separate lines),
+For current version, it's assumed that you have `Extended M3U`_ file
+(i.e. M3U tags and file paths are on **separate** lines),
 for example:
 
-.. code-block:: python
+.. _Extended M3U: https://en.wikipedia.org/wiki/M3U#Extended_M3U
+
+.. code:: none
 
    #EXTM3U
-   #EXTINF:238,MONATIK, Вера Брежнева - ВЕЧЕРиНОЧКА
-   D:\tmp\tmp_mp3\cp1251\01 MONATIK, Вера Брежнева - ВЕЧЕРиНОЧКА [rus pop dance].mp3
-   #EXTINF:267,Dabro - Юность (Mikis Remix)
-   D:\tmp\tmp_mp3\cp1251\02 Dabro - Юность (Mikis Remix) [rus dance].mp3
+   #EXTINF:123, Sample artist - Sample title
+   C:\Documents and Settings\I\My Music\Sample with [brackets].mp3
+   #EXTINF:321,Example Artist - Example title
+   C:\Documents and Settings\I\My Music\Greatest Hits\Example #02.mp3
 
 or simple playlist file with tracks on each line:
 
-.. code-block:: python
+.. code:: none
 
-   D:\tmp\tmp_mp3\cp1251\01 MONATIK, Вера Брежнева - ВЕЧЕРиНОЧКА [rus pop dance].mp3
-   D:\tmp\tmp_mp3\cp1251\02 Dabro - Юность (Mikis Remix) [rus dance].mp3
-   D:\tmp\tmp_mp3\cp1251\03 IOWA - Потанцуй Со Мной (JONVS Radio Remix) [rus pop dance].mp3
+   Stuff.mp3
+   D:\More Music\Foo.mp3
 
 Basic
 ----------
