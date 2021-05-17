@@ -3,12 +3,15 @@
 
 .. _Contributor Guide: contributing.html
 .. _Usage: usage.html
+.. _Manpage: manpage.html
 
 .. toctree::
    :hidden:
    :maxdepth: 1
 
-   usage
+   Usage Examples <usage>
+   Man Page <manpage>
+   truestory
    reference
    contributing
    Code of Conduct <codeofconduct>
