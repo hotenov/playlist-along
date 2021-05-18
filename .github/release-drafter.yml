@@ -32,17 +32,13 @@ autolabeler:
     files:
       - '.github/**/*.yml'
     branch:
-      - '/^ci-.+/'
+      - '/^\d{1,7}-+(\S+[-])?ci(([-]\S+|-|$))/i'
   - label: 'bug'
     branch:
-      - '/^\d{1,7}-+(\S+[-])?fix(([-]\S+|-|$))/'
-    title:
-      - '/fix\s/i'
+      - '/^\d{1,7}-+(\S+[-])?fix(([-]\S+|-|$))/i'
   - label: 'enhancement'
     branch:
-      - '/feat-/i'
-    title:
-      - '/add\s/i'
+      - '/^\d{1,7}-+(\S+[-])?feat(([-]\S+|-|$))/i'
   - label: 'dependencies'
     branch:
       - '/^deps-\S+/'
