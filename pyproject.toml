@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "playlist-along"
-version = "2021.04.29"
+version = "2021.05.18"
 description = "Playlist Along"
 authors = ["Artem Hotenov <qa@hotenov.com>"]
 license = "MIT"
