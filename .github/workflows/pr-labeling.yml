@@ -6,7 +6,7 @@ on:
     types: [opened, reopened, synchronize]
 
 jobs:
-  update_release_draft:
+  set_PR_labels:
     runs-on: ubuntu-latest
     steps:
       # Label Pull Requests when they met conditions from 'autolabeler' option in 'release-drafter.yml'
