@@ -136,7 +136,7 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
         tracklist,
         label="Copying from playlist:",
     ) as bar:
-        for abs_path in bar:  # type: ignore[attr-defined]
+        for abs_path in bar:
             if not Path(abs_path).exists():
                 missing_files.append(abs_path)
             else:
