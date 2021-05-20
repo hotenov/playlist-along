@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, List, Optional, Union
 
 import click
-from click.core import Context, Option, Parameter
+from click import Context, Option, Parameter
 
 from playlist_along import __version__
 from . import playlist
@@ -11,13 +11,13 @@ from .playlist import Playlist
 
 
 # Decorator for passing path to playlist file
-pass_playlist = click.decorators.make_pass_decorator(Playlist, ensure=True)
+pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
 
 
 def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
     """Display only tracks from playlist file via click.echo()."""
     only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
-    click.utils.echo("\n".join(only_paths))
+    click.echo("\n".join(only_paths))
 
 
 def validate_file_callback(
@@ -31,17 +31,17 @@ def validate_file_callback(
     if Path(value).suffix in supported_formats:
         return value
     else:
-        raise click.exceptions.BadParameter(
+        raise click.BadParameter(
             "currently we are supporting only these formats: %s" % supported_formats
         )
 
 
-@click.decorators.group(
+@click.group(
     invoke_without_command=True,
     no_args_is_help=True,
 )
-@click.decorators.version_option(version=__version__)
-@click.decorators.option(
+@click.version_option(version=__version__)
+@click.option(
     "--file",
     "-f",
     type=str,
@@ -50,7 +50,7 @@ def validate_file_callback(
     help="Full path to playlist file.",
     metavar="<string>",
 )
-@click.decorators.pass_context
+@click.pass_context
 def cli(ctx: Context, file: str) -> None:
     """Playlist Along - a CLI for playlist processing."""
     ctx.obj = Playlist(file)
@@ -72,19 +72,19 @@ def display(pls_obj: Playlist) -> None:
 
 
 @cli.command()
-@click.decorators.option(
+@click.option(
     "--dest",
     "-d",
     type=str,
     help="Directory or full path to playlist destination.",
     metavar="<string>",
 )
-@click.decorators.option(
+@click.option(
     "--copy",
     is_flag=True,
     help="Copy files from playlist.",
 )
-@click.decorators.option(
+@click.option(
     "--dir",
     "yes_dir",
     is_flag=True,
