@@ -2,7 +2,7 @@
 from pathlib import Path
 from unittest.mock import Mock
 
-from click.exceptions import ClickException
+from click import ClickException
 import pytest
 from pytest_mock import MockFixture
 

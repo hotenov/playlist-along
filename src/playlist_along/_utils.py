@@ -2,7 +2,7 @@
 from pathlib import Path
 
 from charset_normalizer import CharsetNormalizerMatches as CnM
-from click.exceptions import ClickException
+from click import ClickException
 
 
 def _detect_file_encoding(path: Path) -> str:
