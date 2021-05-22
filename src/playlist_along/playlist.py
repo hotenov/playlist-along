@@ -21,6 +21,10 @@ class Playlist(object):
         self.path: Path = Path(path or ".")
 
 
+# Decorator for passing path to playlist file
+pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+
+
 def get_only_track_paths_from_m3u(
     path: Path, encoding: Optional[str] = None
 ) -> List[str]:
