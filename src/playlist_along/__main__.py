@@ -1,13 +1,12 @@
-"""Command-line interface."""
+"""Script entry point."""
 import sys
-from typing import Any
 
-from .cli import cli
+from .cli import cli_main as cli
 
 
-def main() -> Any:
-    """Return CLI click group."""
-    return cli()  # pragma: no cover
+def main() -> None:
+    """Calls 'cli_main' click group."""
+    cli()  # pragma: no cover
 
 
 if __name__ == "__main__":
