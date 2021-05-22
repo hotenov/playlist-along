@@ -6,7 +6,7 @@ from click.testing import CliRunner, Result
 import pytest
 from pytest_mock import MockFixture
 
-from playlist_along.cli import cli
+from playlist_along.cli import cli_main as cli
 
 
 def test_cli_prints_version(runner: CliRunner) -> None:
