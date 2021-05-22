@@ -1,23 +1,13 @@
-"""CLI commands and functions."""
+"""CLI main click group."""
 from pathlib import Path
-from typing import Any, List, Optional, Union
+from typing import Any, Union
 
 import click
 from click import Context, Option, Parameter
 
 from playlist_along import __version__
-from . import playlist
+from .commands import convert, display
 from .playlist import Playlist
-
-
-# Decorator for passing path to playlist file
-pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
-
-
-def echo_tracks_with_click(file: Path, encoding: Optional[str] = None) -> None:
-    """Display only tracks from playlist file via click.echo()."""
-    only_paths = playlist.get_only_track_paths_from_m3u(file, encoding)
-    click.echo("\n".join(only_paths))
 
 
 def validate_file_callback(
@@ -51,7 +41,7 @@ def validate_file_callback(
     metavar="<string>",
 )
 @click.pass_context
-def cli(ctx: Context, file: str) -> None:
+def cli_main(ctx: Context, file: str) -> None:
     """Playlist Along - a CLI for playlist processing."""
     ctx.obj = Playlist(file)
 
@@ -60,57 +50,12 @@ def cli(ctx: Context, file: str) -> None:
         ctx.exit()
     else:
         if ctx.invoked_subcommand is None:
-            echo_tracks_with_click(Path(file))
+            ctx.invoke(display.display_cmd)
 
 
-@cli.command()
-@pass_playlist
-def display(pls_obj: Playlist) -> None:
-    """Displays tracks from playlist."""
-    file: Path = pls_obj.path
-    echo_tracks_with_click(file)
-
-
-@cli.command()
-@click.option(
-    "--dest",
-    "-d",
-    type=str,
-    help="Directory or full path to playlist destination.",
-    metavar="<string>",
-)
-@click.option(
-    "--copy",
-    is_flag=True,
-    help="Copy files from playlist.",
-)
-@click.option(
-    "--dir",
-    "yes_dir",
-    is_flag=True,
-    help="Tells script that destination is a dir, not a file (for directory name with '.' dot).",
-)
-@pass_playlist
-def convert(pls_obj: Playlist, dest: str, yes_dir: bool, copy: bool) -> None:
-    """Converts playlist from one player to another."""
-    file: Path = pls_obj.path
-    convert_from_aimp_to_vlc_android(file, dest, yes_dir)
-    if copy:
-        copy_files_from_playlist_to_destination_folder(file, dest)
-
-
-def convert_from_aimp_to_vlc_android(file: Path, dest: str, yes_dir: bool) -> None:
-    """Converts AIMP playlist to VLC for Android."""
-    converted_pls, encoding = playlist.get_playlist_for_vlc_android(file)
-    playlist.save_playlist_content(converted_pls, Path(dest), encoding, file, yes_dir)
-
-
-def copy_files_from_playlist_to_destination_folder(file: Path, dest: str) -> None:
-    """Copy tracks from playlist to folder with converted playlist."""
-    content, encoding = playlist.get_full_content_of_playlist(file)
-    only_tracks: List[str] = playlist.get_local_tracks_without_comment_lines(content)
-    playlist.copy_local_tracks_to_folder(only_tracks, dest)
+cli_main.add_command(display.display_cmd)
+cli_main.add_command(convert.convert_cmd)
 
 
 if __name__ == "__main__":
-    cli()  # pragma: no cover
+    cli_main()  # pragma: no cover
