@@ -2,7 +2,7 @@
 import click
 
 from playlist_along import __version__
-from .commands import convert, display
+from .commands import convert, display, inject
 from .playlist import Playlist, validate_file_callback
 
 
@@ -35,6 +35,7 @@ def cli_main(ctx: click.Context, file: str) -> None:
 
 cli_main.add_command(display.display_cmd)
 cli_main.add_command(convert.convert_cmd)
+cli_main.add_command(inject.inject_cmd)
 
 
 if __name__ == "__main__":
