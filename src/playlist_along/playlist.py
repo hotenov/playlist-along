@@ -2,14 +2,15 @@
 from pathlib import Path
 import re
 import shutil
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Tuple, Union
 
 import click
-from click import ClickException
+from click import ClickException, Context, Option, Parameter
 
 from ._utils import _detect_file_encoding
 
 
+SUPPORTED_PLS_FILES: List[str] = [".m3u", ".m3u8"]
 SONG_FORMATS: List[str] = [".mp3", ".flac"]
 
 
@@ -23,6 +24,22 @@ class Playlist(object):
 
 # Decorator for passing path to playlist file
 pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+
+
+def validate_file_callback(
+    ctx: Context, param: Union[Option, Parameter], value: Any = None
+) -> Any:
+    """Validate supported playlist formats."""
+    # For script running without parameters
+    if not value or ctx.resilient_parsing:
+        return
+    supported_formats = SUPPORTED_PLS_FILES
+    if Path(value).suffix in supported_formats:
+        return value
+    else:
+        raise click.BadParameter(
+            "currently we are supporting only these formats: %s" % supported_formats
+        )
 
 
 def get_only_track_paths_from_m3u(
