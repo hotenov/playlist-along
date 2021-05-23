@@ -93,6 +93,14 @@ def clean_m3u_from_links(content: str) -> str:
     return clean_content
 
 
+def clean_m3u_from_extended_tag(content: str) -> str:
+    """Remove #EXTM3U and empty lines."""
+    clean_content = content.strip()
+    if clean_content[:8] == "#EXTM3U\n":
+        clean_content = clean_content[len("#EXTM3U\n"):]
+    return clean_content
+
+
 def make_relatives_paths_in_playlist(content: str) -> str:
     """Remain only filenames from absolute paths."""
     # Pattern for matching line into two groups:
