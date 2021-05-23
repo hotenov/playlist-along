@@ -2,14 +2,15 @@
 from pathlib import Path
 import re
 import shutil
-from typing import List, Optional, Tuple
+from typing import Any, List, Optional, Tuple, Union
 
 import click
-from click import ClickException
+from click import ClickException, Context, Option, Parameter
 
 from ._utils import _detect_file_encoding
 
 
+SUPPORTED_PLS_FILES: List[str] = [".m3u", ".m3u8"]
 SONG_FORMATS: List[str] = [".mp3", ".flac"]
 
 
@@ -23,6 +24,22 @@ class Playlist(object):
 
 # Decorator for passing path to playlist file
 pass_playlist = click.make_pass_decorator(Playlist, ensure=True)
+
+
+def validate_file_callback(
+    ctx: Context, param: Union[Option, Parameter], value: Any = None
+) -> Any:
+    """Validate supported playlist formats."""
+    # For script running without parameters
+    if not value or ctx.resilient_parsing:
+        return
+    supported_formats = SUPPORTED_PLS_FILES
+    if Path(value).suffix in supported_formats:
+        return value
+    else:
+        raise click.BadParameter(
+            "currently we are supporting only these formats: %s" % supported_formats
+        )
 
 
 def get_only_track_paths_from_m3u(
@@ -73,6 +90,14 @@ def clean_m3u_from_links(content: str) -> str:
         line.strip() for line in content.splitlines() if "://" not in line
     ]
     clean_content: str = "\n".join(lines_without_links)
+    return clean_content
+
+
+def clean_m3u_from_extended_tag(content: str) -> str:
+    """Remove #EXTM3U and empty lines."""
+    clean_content = content.strip()
+    if clean_content[:8] == "#EXTM3U\n":
+        clean_content = clean_content[len("#EXTM3U\n"):]
     return clean_content
 
 

@@ -1,5 +1,6 @@
 """Unit-tests for the console module."""
 from pathlib import Path
+from textwrap import dedent
 from unittest.mock import Mock
 
 from click.testing import CliRunner, Result
@@ -302,7 +303,16 @@ def test_cli_copies_files_into_folder_with_dot(runner: CliRunner) -> None:
         Path(temp_folder / "Track 03.flac").write_text("Here are music bytes")
         target_dest = temp_folder / "sub.m3u"
         runner.invoke(
-            cli, ["--file", "temp.m3u", "convert", "--dest", str(target_dest), "--copy", "--dir"]
+            cli,
+            [
+                "--file",
+                "temp.m3u",
+                "convert",
+                "--dest",
+                str(target_dest),
+                "--copy",
+                "--dir",
+            ],
         )
         # Compare files in folders
         origin_dir = [
@@ -310,3 +320,57 @@ def test_cli_copies_files_into_folder_with_dot(runner: CliRunner) -> None:
         ]
         converted_dir = [child.name for child in target_dest.iterdir()]
         assert origin_dir == converted_dir
+
+
+def test_cli_injects_file_top_by_default(runner: CliRunner) -> None:
+    """It injects file at the beginning of origin file by default."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            content = """\
+            Track 01.mp3
+            Track 02.flac"""
+            f.write(dedent(content))
+
+        temp_folder = Path("temp.m3u").resolve().parent
+        # Create injection file
+        Path(temp_folder / "inj.m3u").write_text(r"C:\temp\INJECTED Track 03.mp3")
+
+        runner.invoke(cli, ["-f", "temp.m3u", "inject", "-f", "inj.m3u"])
+
+        injected = Path("temp.m3u").read_text()
+        expected = (
+            "#EXTM3U\n"
+            "C:\\temp\\INJECTED Track 03.mp3\n"
+            "Track 01.mp3\n"
+            "Track 02.flac\n"
+        )
+        assert expected == injected
+
+
+def test_cli_injects_file_at_the_bottom(runner: CliRunner) -> None:
+    """It injects file at the bottom of origin file."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            content = """\
+            #EXTM3U
+            Track 01.mp3
+            Track 02.flac"""
+            f.write(dedent(content))
+
+        temp_folder = Path("temp.m3u").resolve().parent
+        # Create injection file
+        Path(temp_folder / "inj.m3u").write_text(r"C:\temp\INJECTED Track 03.mp3")
+
+        runner.invoke(
+            cli,
+            ["--file", "temp.m3u", "inject", "--file", "inj.m3u", "--bottom"],
+        )
+
+        injected = Path("temp.m3u").read_text()
+        expected = (
+            "#EXTM3U\n"
+            "Track 01.mp3\n"
+            "Track 02.flac\n"
+            "C:\\temp\\INJECTED Track 03.mp3\n"
+        )
+        assert expected == injected

@@ -1,29 +1,9 @@
 """CLI main click group."""
-from pathlib import Path
-from typing import Any, Union
-
 import click
-from click import Context, Option, Parameter
 
 from playlist_along import __version__
-from .commands import convert, display
-from .playlist import Playlist
-
-
-def validate_file_callback(
-    ctx: Context, param: Union[Option, Parameter], value: Any = None
-) -> Any:
-    """Validate supported playlist formats."""
-    # For script running without parameters
-    if not value or ctx.resilient_parsing:
-        return
-    supported_formats = [".m3u", ".m3u8"]
-    if Path(value).suffix in supported_formats:
-        return value
-    else:
-        raise click.BadParameter(
-            "currently we are supporting only these formats: %s" % supported_formats
-        )
+from .commands import convert, display, inject
+from .playlist import Playlist, validate_file_callback
 
 
 @click.group(
@@ -41,7 +21,7 @@ def validate_file_callback(
     metavar="<string>",
 )
 @click.pass_context
-def cli_main(ctx: Context, file: str) -> None:
+def cli_main(ctx: click.Context, file: str) -> None:
     """Playlist Along - a CLI for playlist processing."""
     ctx.obj = Playlist(file)
 
@@ -55,6 +35,7 @@ def cli_main(ctx: Context, file: str) -> None:
 
 cli_main.add_command(display.display_cmd)
 cli_main.add_command(convert.convert_cmd)
+cli_main.add_command(inject.inject_cmd)
 
 
 if __name__ == "__main__":
