@@ -114,3 +114,16 @@ def test_playlist_substitutes_invalid_characters() -> None:
     substituted = playlist.substitute_vlc_invalid_characters(text)
     expected = "Track - %5B01%5D.mp3\n%23Track%23 - 02%5D.flac\n\n"
     assert expected == substituted
+
+
+def test_removing_extended_tag_from_playlist() -> None:
+    """It removes #EXTM3U tag from playlist content."""
+    content = "\n\n#EXTM3U\nExpected Line\n\n"
+    cleaned = playlist.clean_m3u_from_extended_tag(content)
+    expected = "Expected Line"
+    assert expected == cleaned
+
+    content_without = "\n\nC:\\temp\\Expected Line.mp3\n\n"
+    cleaned = playlist.clean_m3u_from_extended_tag(content_without)
+    expected = r"C:\temp\Expected Line.mp3"
+    assert expected == cleaned
