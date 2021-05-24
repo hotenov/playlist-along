@@ -185,16 +185,13 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
         click.echo("\n".join(missing_files))
 
 
-def is_file_blank(file: Path) -> bool:
-    """Return True if file is blank."""
+def is_file_too_small(file: Path) -> bool:
+    """Return True if file is less than 7 bytes."""
     try:
-        with file.open() as f:
-            f.seek(0)
-            first_char = f.read(1)
-            if first_char:
-                return True
-            else:
-                return False
+        if file.stat().st_size > 7:
+            return False
+        else:
+            return True
     except (OSError) as error:
         message = str(error)
         raise ClickException(message)
