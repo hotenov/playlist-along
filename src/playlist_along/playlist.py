@@ -63,9 +63,12 @@ def get_local_tracks_without_comment_lines(playlist_content: str) -> List[str]:
     return only_tracks
 
 
-def get_full_content_of_playlist(path: Path) -> Tuple[str, str]:
+def get_full_content_of_playlist(
+    path: Path, encoding: Optional[str] = None
+) -> Tuple[str, str]:
     """Return full content (text) of a playlist."""
-    encoding = _detect_file_encoding(path)
+    if encoding is None:
+        encoding = _detect_file_encoding(path)
     try:
         playlist_content = path.read_text(encoding=encoding)
     except (OSError) as error:
