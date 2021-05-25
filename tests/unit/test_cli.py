@@ -424,3 +424,17 @@ def test_cli_injects_into_small_origin_playlist(runner: CliRunner) -> None:
         injected = Path("temp.m3u").read_text()
         expected = "#EXTM3U\nTrack 01.mp3\nTrack 02.flac\n"
         assert expected == injected
+
+
+def test_cli_exists_when_small_playlist_to_display(runner: CliRunner) -> None:
+    """It exists if playlist is too small to display."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write("")
+        result = runner.invoke(
+            cli,
+            ["-f", "temp.m3u"],
+        )
+        message = "Warning: Playlist is too small to display. Exit.\n"
+        assert result.output == message
+        assert result.exit_code == 0
