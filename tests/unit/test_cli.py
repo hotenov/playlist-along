@@ -374,3 +374,53 @@ def test_cli_injects_file_at_the_bottom(runner: CliRunner) -> None:
             "C:\\temp\\INJECTED Track 03.mp3\n"
         )
         assert expected == injected
+
+
+def test_cli_exits_on_small_injection(runner: CliRunner) -> None:
+    """It exits if injected file is too small."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            content = """\
+            #EXTM3U
+            Track 01.mp3
+            Track 02.flac"""
+            f.write(dedent(content))
+
+        temp_folder = Path("temp.m3u").resolve().parent
+        # Create injection file
+        Path(temp_folder / "inj.m3u").write_text("")
+
+        result = runner.invoke(
+            cli,
+            ["--file", "temp.m3u", "inject", "--file", "inj.m3u", "--bottom"],
+        )
+
+        injected = Path("temp.m3u").read_text()
+        expected = "#EXTM3U\nTrack 01.mp3\nTrack 02.flac"
+        assert expected == injected
+        message = "Warning: Injected file is too small for playlist. Exit.\n"
+        assert result.output == message
+        assert result.exit_code == 0
+
+
+def test_cli_injects_into_small_origin_playlist(runner: CliRunner) -> None:
+    """It injects if origin file is too small."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write("")
+        temp_folder = Path("temp.m3u").resolve().parent
+        # Create injection file
+        inj_content = """\
+            #EXTM3U
+            Track 01.mp3
+            Track 02.flac"""
+        Path(temp_folder / "inj.m3u").write_text(dedent(inj_content))
+
+        runner.invoke(
+            cli,
+            ["-f", "temp.m3u", "inject", "--file", "inj.m3u"],
+        )
+
+        injected = Path("temp.m3u").read_text()
+        expected = "#EXTM3U\nTrack 01.mp3\nTrack 02.flac\n"
+        assert expected == injected
