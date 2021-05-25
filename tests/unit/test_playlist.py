@@ -127,3 +127,36 @@ def test_removing_extended_tag_from_playlist() -> None:
     cleaned = playlist.clean_m3u_from_extended_tag(content_without)
     expected = r"C:\temp\Expected Line.mp3"
     assert expected == cleaned
+
+
+@pytest.fixture
+def mock_pathlib_read_text(mocker: MockFixture) -> Mock:
+    """Fixture for mocking pathlib.Path.read_text."""
+    pathlib_read_text: Mock = mocker.patch("pathlib.Path.read_text")
+    return pathlib_read_text
+
+
+def test_read_playlist_with_passed_encoding(
+    mock_pathlib_read_text: Mock,
+) -> None:
+    """It applies encoding to read text if it was passed."""
+    file = Path("temp.m3u")
+    playlist.get_full_content_of_playlist(file, "utf-8")
+    mock_pathlib_read_text.assert_called_once_with(encoding="utf-8")
+
+
+@pytest.fixture
+def mock_playlist_path_stat(mocker: MockFixture) -> Mock:
+    """Fixture for mocking Path.stat() called from playlist."""
+    path_stat_mock: Mock = mocker.patch("pathlib.Path.stat")
+    return path_stat_mock
+
+
+def test_playlist_fails_on_retreving_file_stat(
+    mock_playlist_path_stat: Mock,
+) -> None:
+    """It raises ClickException if the file stat retreving fails."""
+    mock_playlist_path_stat.side_effect = OSError
+    with pytest.raises(ClickException) as exc_info:
+        _ = playlist.is_file_too_small(Path("AnyPath.m3u"))
+    assert exc_info.typename == "ClickException"
