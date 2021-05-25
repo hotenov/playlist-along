@@ -31,9 +31,13 @@ from ..playlist import pass_playlist, Playlist
 def convert_cmd(pls_obj: Playlist, dest: str, yes_dir: bool, copy: bool) -> None:
     """Converts playlist from one player to another."""
     file: Path = pls_obj.path
-    convert_from_aimp_to_vlc_android(file, dest, yes_dir)
-    if copy:
-        copy_files_from_playlist_to_destination_folder(file, dest)
+    if playlist.is_file_too_small(file):
+        click.echo("Warning: Playlist is too small to convert. Exit.")
+        click.get_current_context().exit()
+    else:
+        convert_from_aimp_to_vlc_android(file, dest, yes_dir)
+        if copy:
+            copy_files_from_playlist_to_destination_folder(file, dest)
 
 
 def convert_from_aimp_to_vlc_android(file: Path, dest: str, yes_dir: bool) -> None:
