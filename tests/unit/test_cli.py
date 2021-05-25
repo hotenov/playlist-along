@@ -438,3 +438,17 @@ def test_cli_exists_when_small_playlist_to_display(runner: CliRunner) -> None:
         message = "Warning: Playlist is too small to display. Exit.\n"
         assert result.output == message
         assert result.exit_code == 0
+
+
+def test_cli_exists_when_small_playlist_to_convert(runner: CliRunner) -> None:
+    """It exists if playlist is too small to convert."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            f.write("")
+        result = runner.invoke(
+            cli,
+            ["-f", "temp.m3u", "convert", "-d", "C-temp.m3u"],
+        )
+        message = "Warning: Playlist is too small to convert. Exit.\n"
+        assert result.output == message
+        assert result.exit_code == 0
