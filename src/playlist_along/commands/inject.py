@@ -28,8 +28,17 @@ def inject_cmd(pls_obj: Playlist, file: str, top: bool) -> None:
     origin_file: Path = pls_obj.path
     inj_file: Path = Path(file)
 
-    origin_content, origin_enc = playlist.get_full_content_of_playlist(origin_file)
-    inj_content, inj_enc = playlist.get_full_content_of_playlist(inj_file)
+    if playlist.is_file_too_small(inj_file):
+        click.echo("Warning: Injected file is too small for playlist. Exit.")
+        click.get_current_context().exit()
+    else:
+        inj_content, inj_enc = playlist.get_full_content_of_playlist(inj_file)
+
+    if playlist.is_file_too_small(origin_file):
+        origin_content = ""
+        origin_enc = "utf-8"
+    else:
+        origin_content, origin_enc = playlist.get_full_content_of_playlist(origin_file)
 
     inj_result = inject_content(origin_content, inj_content, top)
     playlist.save_playlist_content(inj_result, origin_file, origin_enc)
@@ -41,8 +50,10 @@ def inject_content(origin: str, injection: str, top: bool) -> str:
     inj_clean: str = playlist.clean_m3u_from_extended_tag(injection)
     concatenation: str = "#EXTM3U\n"
     if top:
-        concatenation += inj_clean + "\n" + origin_clean
+        paste_origin_after = "\n" + origin_clean
+        concatenation += f"{inj_clean + paste_origin_after if origin else inj_clean}"
     else:
-        concatenation += origin_clean + "\n" + inj_clean
+        paste_origin_before = origin_clean + "\n"
+        concatenation += f"{paste_origin_before + inj_clean if origin else inj_clean}"
     concatenation += "\n"
     return concatenation

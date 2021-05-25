@@ -63,9 +63,12 @@ def get_local_tracks_without_comment_lines(playlist_content: str) -> List[str]:
     return only_tracks
 
 
-def get_full_content_of_playlist(path: Path) -> Tuple[str, str]:
+def get_full_content_of_playlist(
+    path: Path, encoding: Optional[str] = None
+) -> Tuple[str, str]:
     """Return full content (text) of a playlist."""
-    encoding = _detect_file_encoding(path)
+    if encoding is None:
+        encoding = _detect_file_encoding(path)
     try:
         playlist_content = path.read_text(encoding=encoding)
     except (OSError) as error:
@@ -180,3 +183,15 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
     if missing_files:
         click.echo("Missing files from playlist were NOT copied:")
         click.echo("\n".join(missing_files))
+
+
+def is_file_too_small(file: Path) -> bool:
+    """Return True if file is less than 7 bytes."""
+    try:
+        if file.stat().st_size > 7:
+            return False
+        else:
+            return True
+    except (OSError) as error:
+        message = str(error)
+        raise ClickException(message)
