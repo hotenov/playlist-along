@@ -1,12 +1,10 @@
 """Create command."""
-from ctypes import windll, wintypes
-from functools import cmp_to_key
 from pathlib import Path
-import re
-from typing import Any, Iterator, List, Tuple
+from typing import Iterator, List, Tuple
 
 
 import click
+from natsort import os_sorted
 
 from .. import playlist
 from ..playlist import pass_playlist, Playlist, SONG_FORMATS
@@ -89,7 +87,7 @@ def create_cmd(
         abs_paths = [str(f.resolve()) for f in valid_files]
 
         if nat_sort:
-            sorted_rel, sorted_abs = winsort(rel_paths), winsort(abs_paths)
+            sorted_rel, sorted_abs = os_sorted(rel_paths), os_sorted(abs_paths)
         else:
             sorted_rel, sorted_abs = sorted(rel_paths), sorted(abs_paths)
 
@@ -143,29 +141,3 @@ def generate_playlist_content_from_zipped(
         else:
             content += abs_p + "\n"
     return content
-
-
-def sorted_alphanumeric(data: List[str]) -> List[str]:
-    """Return list sorted close to Windows Explorer.
-
-    There are some edge cases,
-    see https://stackoverflow.com/a/48030307/3366563
-    """
-
-    def convert(text: str) -> Any:
-        return int(text) if text.isdigit() else text.lower()
-
-    def alphanum_key(key: str) -> List[int]:
-        return [convert(c) for c in re.split("([0-9]+)", key)]
-
-    return sorted(data, key=alphanum_key)
-
-
-def winsort(data):
-    """Return sorted list exactly as Windows Explorer does."""
-    _StrCmpLogicalW = windll.Shlwapi.StrCmpLogicalW
-    _StrCmpLogicalW.argtypes = [wintypes.LPWSTR, wintypes.LPWSTR]
-    _StrCmpLogicalW.restype = wintypes.INT
-
-    cmp_fnc = lambda psz1, psz2: _StrCmpLogicalW(psz1, psz2)
-    return sorted(data, key=cmp_to_key(cmp_fnc))
