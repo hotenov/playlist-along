@@ -72,43 +72,44 @@ def create_cmd(
     dir: Path = Path(from_)
     playlist_as_text: str = ""
 
-    if dir.is_dir():
-        valid_files: List[Path] = []
-        sorted_abs: List[str] = []
-        sorted_rel: List[str] = []
+    try:
+        if dir.is_dir():
+            valid_files: List[Path] = []
+            valid_files = get_supported_audios_in_folder(dir)
 
-        valid_files = get_supported_audios_in_folder(dir)
+            if not valid_files:
+                click.echo(f"Warning: No supported audio files in folder '{str(dir)}'.")
+                click.get_current_context().exit()
 
-        if not valid_files:
-            click.echo(f"Warning: No supported audio files in folder '{str(dir)}'.")
+            sorted_rel: List[str] = []
+            sorted_abs: List[str] = []
+            rel_paths = [f.name for f in valid_files]
+            abs_paths = [str(f.resolve()) for f in valid_files]
+
+            if nat_sort:
+                sorted_rel, sorted_abs = os_sorted(rel_paths), os_sorted(abs_paths)
+            else:
+                sorted_rel, sorted_abs = sorted(rel_paths), sorted(abs_paths)
+
+            zipped_paths = zip(sorted_rel, sorted_abs)
+            playlist_as_text = generate_playlist_content_from_zipped(
+                zipped_paths, extended, rel
+            )
+
+            target_file: Path = Path()
+            if is_here:
+                playlist_name = pls_path.name
+                target_file = Path(dir, Path(playlist_name))
+            else:
+                target_file = pls_path
+            playlist.save_playlist_content(playlist_as_text, target_file)
+
+        else:
+            click.echo(f"Error: This directory '{str(dir)}' does NOT exist.")
             click.get_current_context().exit()
-
-        rel_paths = [f.name for f in valid_files]
-        abs_paths = [str(f.resolve()) for f in valid_files]
-
-        if nat_sort:
-            sorted_rel, sorted_abs = os_sorted(rel_paths), os_sorted(abs_paths)
-        else:
-            sorted_rel, sorted_abs = sorted(rel_paths), sorted(abs_paths)
-
-        zipped_paths = zip(sorted_rel, sorted_abs)
-
-        playlist_as_text = generate_playlist_content_from_zipped(
-            zipped_paths, extended, rel
-        )
-
-        target_file: Path = Path()
-        if is_here:
-            playlist_name = pls_path.name
-            target_file = Path(dir, Path(playlist_name))
-        else:
-            target_file = pls_path
-        playlist.save_playlist_content(playlist_as_text, target_file)
-
-        click.echo(playlist_as_text)
-    else:
-        click.echo(f"Error: This directory '{str(dir)}' does NOT exist.")
-        click.get_current_context().exit()
+    except (OSError) as error:
+        message = str(error)
+        raise click.ClickException(message)
 
 
 def get_supported_audios_in_folder(dir: Path) -> List[Path]:
