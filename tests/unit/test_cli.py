@@ -671,3 +671,27 @@ def test_cli_creates_extended_m3u_with_abs_paths(runner: CliRunner) -> None:
         assert line_3 == lines[2]
         assert line_4
         assert line_5 == lines[4]
+
+
+@pytest.fixture
+def mock_path_isdir(mocker: MockFixture) -> Mock:
+    """Fixture for mocking pathlib.Path.is_dir()."""
+    path_isdir: Mock = mocker.patch("pathlib.Path.is_dir")
+    return path_isdir
+
+
+def test_cli_creation_fails_on_path_is_dir(
+    runner: CliRunner,
+    mock_path_isdir: Mock,
+) -> None:
+    """It exits with a non-zero status code if Path.is_dir() fails."""
+    with runner.isolated_filesystem():
+        temp_folder = Path().resolve()
+        Path(temp_folder / "Track 01.mp3").write_text("Here are music bytes")
+
+        mock_path_isdir.side_effect = OSError
+        result = runner.invoke(
+            cli, ["--file", "temp.m3u", "create", "--from", str(temp_folder)]
+        )
+        assert result.exit_code == 1
+        assert "Error" in result.output
