@@ -52,6 +52,13 @@ from ..playlist import pass_playlist, Playlist, SONG_FORMATS
     is_flag=True,
     help="Create an empty playlist file and exit.",
 )
+@click.option(
+    "--reverse",
+    "-REV",
+    "is_reversed",
+    is_flag=True,
+    help="Reverse the order of playlist.",
+)
 @pass_playlist
 def create_cmd(
     pls_obj: Playlist,
@@ -61,6 +68,7 @@ def create_cmd(
     nat_sort: bool,
     is_here: bool,
     is_empty: bool,
+    is_reversed: bool,
 ) -> None:
     """Creates playlist from folder or from scratch."""
     pls_path: Path = pls_obj.path
@@ -92,7 +100,12 @@ def create_cmd(
             else:
                 sorted_rel, sorted_abs = sorted(rel_paths), sorted(abs_paths)
 
+            if is_reversed:
+                sorted_rel.reverse()
+                sorted_abs.reverse()
+
             zipped_paths = zip(sorted_rel, sorted_abs)
+
             playlist_as_text = generate_playlist_content_from_zipped(
                 zipped_paths, extended, rel
             )
@@ -141,7 +154,7 @@ def generate_playlist_content_from_zipped(
             try:
                 length_sec = get_seconds_from_file_info(abs_p)
             except Exception:
-                pass
+                length_sec: int = 0
             content += "#EXTINF:" + str(length_sec) + "," + Path(abs_p).stem + "\n"
         if rel:
             content += rel_p + "\n"
