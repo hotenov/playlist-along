@@ -4,6 +4,7 @@ from typing import Iterator, List, Tuple
 
 
 import click
+import mutagen
 from natsort import os_sorted
 
 from .. import playlist
@@ -136,9 +137,22 @@ def generate_playlist_content_from_zipped(
             # Add header tag at the beginning
             if i == 1:
                 content += "#EXTM3U" + "\n"
-            content += "#EXTINF:" + str(0) + "," + Path(abs_p).stem + "\n"
+            length_sec: int = 0
+            try:
+                length_sec = get_seconds_from_file_info(abs_p)
+            except Exception:
+                pass
+            content += "#EXTINF:" + str(length_sec) + "," + Path(abs_p).stem + "\n"
         if rel:
             content += rel_p + "\n"
         else:
             content += abs_p + "\n"
     return content
+
+
+def get_seconds_from_file_info(path: str) -> int:
+    """Get audio length in seconds (rounded)."""
+    audio = mutagen.File(path)
+    length = audio.info.length
+    seconds = round(length)
+    return seconds
