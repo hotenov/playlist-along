@@ -565,12 +565,12 @@ def test_cli_creates_playlist_with_natural_sort_on_linux(
             content = Path("new.m3u8").read_text()
             # Output of 'ls -lA' on Ubuntu 20.04.2 LTS
             expected = (
+                "1 Track 1.flac\n"
                 "01 Track 01.mp3\n"
                 "10 Track 10.flac\n"
-                "1 Track 1.flac\n"
                 "!Star track.flac\n"
-                "Track 01.mp3\n"
                 ".wtf.mp3\n"
+                "Track 01.mp3\n"
             )
             assert expected == content
             assert result.exit_code == 0
