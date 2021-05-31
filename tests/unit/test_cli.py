@@ -636,10 +636,22 @@ def test_cli_creates_in_the_same_folder_with_here(runner: CliRunner) -> None:
         assert result.exit_code == 0
 
 
-def test_cli_creates_extended_m3u_with_abs_paths(runner: CliRunner) -> None:
-    """It creates extended m3u (with basic tags).
+@pytest.fixture
+def mock_get_seconds(mocker: MockFixture) -> Mock:
+    """Fixture for create.get_seconds_from_file_info()."""
+    get_seconds: Mock = mocker.patch(
+        "playlist_along.commands.create.get_seconds_from_file_info"
+    )
+    return get_seconds
 
-    And with absolute paths.
+
+def test_cli_creates_extended_m3u_with_abs_paths(
+    runner: CliRunner,
+    mock_get_seconds: Mock,
+) -> None:
+    """It creates extended m3u (with basic m3u tags).
+
+    With mocked length=666 and with absolute paths.
     """
     with runner.isolated_filesystem():
         temp_folder = Path().resolve()
@@ -647,6 +659,7 @@ def test_cli_creates_extended_m3u_with_abs_paths(runner: CliRunner) -> None:
         Path(temp_folder / "Track 01.mp3").write_text("")
         Path(temp_folder / "Track 02.flac").write_text("")
 
+        mock_get_seconds.return_value = 666
         runner.invoke(
             cli,
             [
@@ -662,9 +675,9 @@ def test_cli_creates_extended_m3u_with_abs_paths(runner: CliRunner) -> None:
         content = Path(temp_folder / "extended.m3u8").read_text()
         lines = content.splitlines()
         line_1 = "#EXTM3U"
-        line_2 = "#EXTINF:" in lines[1] and ",Track 01" in lines[1]
+        line_2 = "#EXTINF:666" in lines[1] and ",Track 01" in lines[1]
         line_3 = str(Path(temp_folder / "Track 01.mp3"))
-        line_4 = "#EXTINF:" in lines[3] and ",Track 02" in lines[3]
+        line_4 = "#EXTINF:666" in lines[3] and ",Track 02" in lines[3]
         line_5 = str(Path(temp_folder / "Track 02.flac"))
         assert line_1 == lines[0]
         assert line_2
