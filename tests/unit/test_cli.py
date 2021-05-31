@@ -708,3 +708,35 @@ def test_cli_creation_fails_on_path_is_dir(
         )
         assert result.exit_code == 1
         assert "Error" in result.output
+
+
+def test_cli_creates_playlist_with_reversed_order(
+    runner: CliRunner,
+) -> None:
+    """It reverses playlist with '-REV' flag."""
+    with runner.isolated_filesystem():
+        # Create a couple of files
+        Path(".wtf.mp3").write_text("")
+        Path("1 Track 1.flac").write_text("")
+        Path("10 Track 10.flac").write_text("")
+        Path("01 Track 01.mp3").write_text("")
+        Path("Track 01.mp3").write_text("")
+        Path("!Star track.flac").write_text("")
+        Path("04 Track 01.mp3").write_text("")
+        temp_folder = Path("Track 01.mp3").resolve().parent
+        result = runner.invoke(
+            cli,
+            ["-f", "new.m3u8", "create", "--from", str(temp_folder), "-REV"],
+        )
+        content = Path("new.m3u8").read_text()
+        expected = (
+            "Track 01.mp3\n"
+            "10 Track 10.flac\n"
+            "1 Track 1.flac\n"
+            "04 Track 01.mp3\n"
+            "01 Track 01.mp3\n"
+            ".wtf.mp3\n"
+            "!Star track.flac\n"
+        )
+        assert expected == content
+        assert result.exit_code == 0
