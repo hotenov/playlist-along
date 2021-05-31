@@ -154,7 +154,7 @@ def generate_playlist_content_from_zipped(
             try:
                 length_sec = get_seconds_from_file_info(abs_p)
             except Exception:
-                length_sec: int = 0
+                length_sec = 0
             content += "#EXTINF:" + str(length_sec) + "," + Path(abs_p).stem + "\n"
         if rel:
             content += rel_p + "\n"
