@@ -1,9 +1,11 @@
 """Unit-tests for the console module."""
 from pathlib import Path
+import platform
 from textwrap import dedent
 from unittest.mock import Mock
 
 from click.testing import CliRunner, Result
+from mutagen import MutagenError
 import pytest
 from pytest_mock import MockFixture
 
@@ -452,3 +454,331 @@ def test_cli_exists_when_small_playlist_to_convert(runner: CliRunner) -> None:
         message = "Warning: Playlist is too small to convert. Exit.\n"
         assert result.output == message
         assert result.exit_code == 0
+
+
+def test_cli_exists_on_create_from_nonexisting_folder(runner: CliRunner) -> None:
+    """It exists if folder with audio files does not exist."""
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            cli,
+            ["-f", "temp.m3u", "create", "--from", "no_directory"],
+        )
+        message = "Error: This directory 'no_directory' does NOT exist.\n"
+        assert result.output == message
+        assert result.exit_code == 0
+
+
+def test_cli_creates_empty_playlist_and_exists(runner: CliRunner) -> None:
+    """It exists after creation an empty playlist."""
+    with runner.isolated_filesystem():
+        result = runner.invoke(
+            cli,
+            # Even if another options were passed
+            ["-f", "new.m3u", "create", "-f", "no_directory", "--empty"],
+        )
+        content = Path("new.m3u").read_text()
+        expected_content = ""
+
+        assert expected_content == content
+        assert result.exit_code == 0
+
+
+def test_cli_exists_when_no_supported_audios_in_folder(runner: CliRunner) -> None:
+    """It exists if there is no supported audio files in folder."""
+    with runner.isolated_filesystem():
+        # Create a couple of files
+        Path("Track 01.mp4").write_text("Here Track 01.mp4")
+        Path("Track 02.txt").write_text("Here Track 02.txt")
+        temp_folder = Path("Track 01.mp4").resolve().parent
+
+        result = runner.invoke(
+            cli,
+            ["-f", "new.m3u8", "create", "--from", str(temp_folder)],
+        )
+        message = "Warning: No supported audio files in folder"
+        assert message in result.output
+        assert result.exit_code == 0
+
+
+def test_cli_creates_playlist_with_natural_sort_on_windows(
+    runner: CliRunner,
+) -> None:
+    """It sorts files in playlist with natural order sorting.
+
+    Note: this test only for Windows CI runners.
+    """
+    if platform.system() == "Windows":
+        with runner.isolated_filesystem():
+            # Create a couple of files
+            Path(".wtf.mp3").write_text("")
+            Path("1 Track 1.flac").write_text("")
+            Path("10 Track 10.flac").write_text("")
+            Path("01 Track 01.mp3").write_text("")
+            Path("Track 01.mp3").write_text("")
+            Path("!Star track.flac").write_text("")
+            Path("04 Track 04.mp3").write_text("")
+            temp_folder = Path("Track 01.mp3").resolve().parent
+
+            result = runner.invoke(
+                cli,
+                ["-f", "new.m3u8", "create", "--from", str(temp_folder), "--nat-sort"],
+            )
+            content = Path("new.m3u8").read_text()
+            expected = (
+                "!Star track.flac\n"
+                ".wtf.mp3\n"
+                "01 Track 01.mp3\n"
+                "1 Track 1.flac\n"
+                "04 Track 04.mp3\n"
+                "10 Track 10.flac\n"
+                "Track 01.mp3\n"
+            )
+            assert expected == content
+            assert result.exit_code == 0
+    else:
+        # Pass on other OS
+        assert True
+
+
+def test_cli_creates_playlist_with_natural_sort_on_linux(
+    runner: CliRunner,
+) -> None:
+    """It sorts files in playlist with natural order sorting.
+
+    Note: this test only for Linux CI runners.
+    """
+    if platform.system() == "Linux":
+        with runner.isolated_filesystem():
+            # Create a couple of files
+            Path(".wtf.mp3").write_text("")
+            Path("1 Track 1.flac").write_text("")
+            Path("10 Track 10.flac").write_text("")
+            Path("01 Track 01.mp3").write_text("")
+            Path("Track 01.mp3").write_text("")
+            Path("!Star track.flac").write_text("")
+            temp_folder = Path("Track 01.mp3").resolve().parent
+
+            result = runner.invoke(
+                cli,
+                ["-f", "new.m3u8", "create", "--from", str(temp_folder), "--nat-sort"],
+            )
+            content = Path("new.m3u8").read_text()
+            # Output of 'ls -lA' on Ubuntu 20.04.2 LTS
+            expected = (
+                "1 Track 1.flac\n"
+                "01 Track 01.mp3\n"
+                "10 Track 10.flac\n"
+                "!Star track.flac\n"
+                ".wtf.mp3\n"
+                "Track 01.mp3\n"
+            )
+            assert expected == content
+            assert result.exit_code == 0
+    else:
+        # Pass on other OS
+        assert True
+
+
+def test_cli_creates_playlist_with_ordinary_sort(
+    runner: CliRunner,
+) -> None:
+    """It sorts files in playlist with 'ordinary' sorting.
+
+    Note: 'ordinary' here is Python sorted().
+    """
+    with runner.isolated_filesystem():
+        # Create a couple of files
+        Path(".wtf.mp3").write_text("")
+        Path("1 Track 1.flac").write_text("")
+        Path("10 Track 10.flac").write_text("")
+        Path("01 Track 01.mp3").write_text("")
+        Path("Track 01.mp3").write_text("")
+        Path("!Star track.flac").write_text("")
+        Path("04 Track 01.mp3").write_text("")
+        temp_folder = Path("Track 01.mp3").resolve().parent
+        result = runner.invoke(
+            cli,
+            ["-f", "new.m3u8", "create", "--from", str(temp_folder)],
+        )
+        content = Path("new.m3u8").read_text()
+        expected = (
+            "!Star track.flac\n"
+            ".wtf.mp3\n"
+            "01 Track 01.mp3\n"
+            "04 Track 01.mp3\n"
+            "1 Track 1.flac\n"
+            "10 Track 10.flac\n"
+            "Track 01.mp3\n"
+        )
+        assert expected == content
+        assert result.exit_code == 0
+
+
+def test_cli_creates_in_the_same_folder_with_here(runner: CliRunner) -> None:
+    """It creates playlist in the same folder with audio files.
+
+    If option '--here' was passed.
+    """
+    with runner.isolated_filesystem():
+        temp_folder = Path().resolve()
+        sub_temp = Path(temp_folder / "audios")
+        sub_temp.mkdir()
+        # Create a couple of files in sub-folder
+        Path(sub_temp / "Track 01.mp3").write_text("")
+        Path(sub_temp / "Track 02.flac").write_text("")
+
+        result = runner.invoke(
+            cli,
+            ["-f", "news.m3u8", "create", "-f", str(sub_temp), "--here"],
+        )
+        content = Path(temp_folder / sub_temp / "news.m3u8").read_text()
+        expected = "Track 01.mp3\nTrack 02.flac\n"
+        assert expected == content
+        assert result.exit_code == 0
+
+
+@pytest.fixture
+def mock_get_seconds(mocker: MockFixture) -> Mock:
+    """Fixture for create.get_seconds_from_file_info()."""
+    get_seconds: Mock = mocker.patch(
+        "playlist_along.commands.create.get_seconds_from_file_info"
+    )
+    return get_seconds
+
+
+def test_cli_creates_extended_m3u_with_abs_paths(
+    runner: CliRunner,
+    mock_get_seconds: Mock,
+) -> None:
+    """It creates extended m3u (with basic m3u tags).
+
+    With mocked length=666 and with absolute paths.
+    """
+    with runner.isolated_filesystem():
+        temp_folder = Path().resolve()
+        # Create a couple of files in sub-folder
+        Path(temp_folder / "Track 01.mp3").write_text("")
+        Path(temp_folder / "Track 02.flac").write_text("")
+
+        mock_get_seconds.return_value = 666
+        runner.invoke(
+            cli,
+            [
+                "-f",
+                "extended.m3u8",
+                "create",
+                "-f",
+                str(temp_folder),
+                "--ext-m3u",
+                "--abs",
+            ],
+        )
+        content = Path(temp_folder / "extended.m3u8").read_text()
+        lines = content.splitlines()
+        line_1 = "#EXTM3U"
+        line_2 = "#EXTINF:666" in lines[1] and ",Track 01" in lines[1]
+        line_3 = str(Path(temp_folder / "Track 01.mp3"))
+        line_4 = "#EXTINF:666" in lines[3] and ",Track 02" in lines[3]
+        line_5 = str(Path(temp_folder / "Track 02.flac"))
+        assert line_1 == lines[0]
+        assert line_2
+        assert line_3 == lines[2]
+        assert line_4
+        assert line_5 == lines[4]
+
+
+@pytest.fixture
+def mock_path_isdir(mocker: MockFixture) -> Mock:
+    """Fixture for mocking pathlib.Path.is_dir()."""
+    path_isdir: Mock = mocker.patch("pathlib.Path.is_dir")
+    return path_isdir
+
+
+def test_cli_creation_fails_on_path_is_dir(
+    runner: CliRunner,
+    mock_path_isdir: Mock,
+) -> None:
+    """It exits with a non-zero status code if Path.is_dir() fails."""
+    with runner.isolated_filesystem():
+        temp_folder = Path().resolve()
+        Path(temp_folder / "Track 01.mp3").write_text("Here are music bytes")
+
+        mock_path_isdir.side_effect = OSError
+        result = runner.invoke(
+            cli, ["--file", "temp.m3u", "create", "--from", str(temp_folder)]
+        )
+        assert result.exit_code == 1
+        assert "Error" in result.output
+
+
+def test_cli_creates_playlist_with_reversed_order(
+    runner: CliRunner,
+) -> None:
+    """It reverses playlist with '-REV' flag."""
+    with runner.isolated_filesystem():
+        # Create a couple of files
+        Path(".wtf.mp3").write_text("")
+        Path("1 Track 1.flac").write_text("")
+        Path("10 Track 10.flac").write_text("")
+        Path("01 Track 01.mp3").write_text("")
+        Path("Track 01.mp3").write_text("")
+        Path("!Star track.flac").write_text("")
+        Path("04 Track 01.mp3").write_text("")
+        temp_folder = Path("Track 01.mp3").resolve().parent
+        result = runner.invoke(
+            cli,
+            ["-f", "new.m3u8", "create", "--from", str(temp_folder), "-REV"],
+        )
+        content = Path("new.m3u8").read_text()
+        expected = (
+            "Track 01.mp3\n"
+            "10 Track 10.flac\n"
+            "1 Track 1.flac\n"
+            "04 Track 01.mp3\n"
+            "01 Track 01.mp3\n"
+            ".wtf.mp3\n"
+            "!Star track.flac\n"
+        )
+        assert expected == content
+        assert result.exit_code == 0
+
+
+def test_cli_creates_extended_m3u_with_default_length_on_error(
+    runner: CliRunner,
+    mock_get_seconds: Mock,
+) -> None:
+    """It creates extended m3u (with basic m3u tags).
+
+    With mocked length=666 and with absolute paths.
+    """
+    with runner.isolated_filesystem():
+        temp_folder = Path().resolve()
+        # Create a couple of files in sub-folder
+        Path(temp_folder / "Track 01.mp3").write_text("")
+        Path(temp_folder / "Track 02.flac").write_text("")
+
+        mock_get_seconds.side_effect = MutagenError
+        runner.invoke(
+            cli,
+            [
+                "-f",
+                "extended.m3u8",
+                "create",
+                "-f",
+                str(temp_folder),
+                "--ext-m3u",
+                "--abs",
+            ],
+        )
+        content = Path(temp_folder / "extended.m3u8").read_text()
+        lines = content.splitlines()
+        line_1 = "#EXTM3U"
+        line_2 = "#EXTINF:0" in lines[1] and ",Track 01" in lines[1]
+        line_3 = str(Path(temp_folder / "Track 01.mp3"))
+        line_4 = "#EXTINF:0" in lines[3] and ",Track 02" in lines[3]
+        line_5 = str(Path(temp_folder / "Track 02.flac"))
+        assert line_1 == lines[0]
+        assert line_2
+        assert line_3 == lines[2]
+        assert line_4
+        assert line_5 == lines[4]
