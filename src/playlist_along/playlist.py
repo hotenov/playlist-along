@@ -101,7 +101,7 @@ def clean_m3u_from_extended_tag(content: str) -> str:
     clean_content = content.strip()
     if clean_content[:8] == "#EXTM3U\n":
         clean_content = clean_content[len("#EXTM3U\n"):]
-    return clean_content
+    return clean_content.strip()
 
 
 def make_relatives_paths_in_playlist(content: str) -> str:
