@@ -144,6 +144,73 @@ Or maybe in reversed order? ``-REV`` will help you:
    Script creates all playlist files only in ``UTF-8`` encoding. 
    Is that a problem for you - let me know.
 
+How to inject one M3U into another
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assume you have origin playlist with the following content:
+
+.. code:: none
+
+   #EXTM3U
+   #EXTINF:11,Track 01
+   D:\tmp\tmp_mp3\Track 01.mp3
+   #EXTINF:22,Track 02
+   D:\tmp\tmp_mp3\Track 02.mp3
+
+and playlist you want to inject (insert)
+with the content below:
+
+.. code:: none
+
+   D:\tmp\tmp_mp3\Track 03.mp3
+   D:\tmp\tmp_mp3\Track 04.mp3
+
+You can execute the ``inject`` command
+either with option ``--top`` or with option ``--bottom``.
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\origin.m3u8" inject -f "D:\tmp\inj.m3u8" --top
+   playlist-along -f "D:\tmp\pls\origin.m3u8" inject -f "D:\tmp\inj.m3u8" --bottom
+
+
+*  ``--top`` - to paste content of the injected file at the beginning of origin file.
+   It's by default and can be omitted.
+*  ``--bottom`` - to paste content of the injected file at the end (bottom) of origin file
+
+Compare results:
+
+.. tab:: with top
+
+   .. code:: none
+
+      #EXTM3U
+      D:\tmp\tmp_mp3\Track 03.mp3
+      D:\tmp\tmp_mp3\Track 04.mp3
+      #EXTINF:11,Track 01
+      D:\tmp\tmp_mp3\Track 02.mp3
+      #EXTINF:22,Track 02
+      D:\tmp\tmp_mp3\Track 02.mp3
+
+
+.. tab:: with bottom
+
+   .. code:: none
+
+      #EXTM3U
+      #EXTINF:11,Track 01
+      D:\tmp\tmp_mp3\Track 01.mp3
+      #EXTINF:22,Track 02
+      D:\tmp\tmp_mp3\Track 02.mp3
+      D:\tmp\tmp_mp3\Track 03.mp3
+      D:\tmp\tmp_mp3\Track 04.mp3
+
+
+This command also removes all blank lines in both files,
+remains only one hashtag ``#EXTM3U``
+and adds a new line at the end of updated origin file.
+An origin playlist can be blank, but injected can't.
+
 Advanced
 ----------
 
