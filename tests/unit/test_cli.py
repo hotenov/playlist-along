@@ -73,6 +73,28 @@ def test_cli_prints_tracklist_with_display(runner: CliRunner) -> None:
         assert result.output == "First track!.flac\nSecond Track!.mp3\n"
 
 
+def test_cli_displays_full_content_and_exits(runner: CliRunner) -> None:
+    """It displays a full content of playlist and then exits."""
+    with runner.isolated_filesystem():
+        with open("temp.m3u", "w") as f:
+            content = """\
+            #EXTM3U
+            Track 01.mp3
+
+            #EXTINF:2164,Title
+            Track 02.flac"""
+            f.write(dedent(content))
+
+        result = runner.invoke(
+            cli,
+            ["-f", "temp.m3u", "display", "--full"],
+        )
+
+        expected = "#EXTM3U\nTrack 01.mp3\n\n#EXTINF:2164,Title\nTrack 02.flac"
+        assert result.output == expected + "\n"
+        assert result.exit_code == 0
+
+
 def test_cli_converts_tracklist_for_vlc(runner: CliRunner) -> None:
     """It saves converted playlist with relative paths and with valid characters."""
     with runner.isolated_filesystem():
