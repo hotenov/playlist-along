@@ -241,3 +241,13 @@ Option ``--empty`` is just for this purpose:
 .. code-block:: bash
 
    playlist-along -f "D:\tmp\pls\blank.m3u8" create --empty
+
+How to display a full content of playlist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's easy with ``--full`` / ``-F`` option
+of 'display' command:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\origin.m3u8" display -F
