@@ -18,9 +18,12 @@ from ..playlist import pass_playlist, Playlist, validate_file_callback
     metavar="<string>",
 )
 @click.option(
-    "--top/--no-top",
-    " /--bottom",
+    "--top/--bottom",
     default=True,
+    help=(
+        "Insert a content of injected file at the begining "
+        "OR at the end of the origin playlist."
+    ),
 )
 @pass_playlist
 def inject_cmd(pls_obj: Playlist, file: str, top: bool) -> None:

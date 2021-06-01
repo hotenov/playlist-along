@@ -98,6 +98,119 @@ For copying songs from origin playlist to folder with converted playlist, use op
    There is a restriction for audio formats as well (only ``.mp3``, ``.flac``).
 
 
+How to create M3U with tracks in a folder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To create (generate) a playlist with absolute paths to audio files
+in certain folder and place this playlist somewhere,
+you can use this command:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs
+
+If you want create a playlist with relative paths
+and place it along with audio tracks (in the same folder),
+you should use ``--here`` option.
+In that case a full path to playlist can be omitted.
+You need only its name and format.
+Relative paths are by default:
+
+.. code-block:: bash
+
+   playlist-along -f "name.m3u8" create -f "D:\tmp\tmp_mp3" --here
+
+Do you like extended M3U? No problem.
+Use option ``--ext-m3u``:
+
+.. code-block:: bash
+
+   playlist-along -f "name.m3u8" create -f "D:\tmp\tmp_mp3" --here --ext-m3u
+
+Windows users could get used to 'natural sort order' in their Explorer windows.
+You can apply exact the same order for playlist as you see files in Windows Explorer:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs --nat-sort
+
+Or maybe in reversed order? ``-REV`` will help you:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs --nat-sort -REV
+
+.. important::
+   Script creates all playlist files only in ``UTF-8`` encoding. 
+   Is that a problem for you - let me know.
+
+How to inject one M3U into another
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Assume you have origin playlist with the following content:
+
+.. code:: none
+
+   #EXTM3U
+   #EXTINF:11,Track 01
+   D:\tmp\tmp_mp3\Track 01.mp3
+   #EXTINF:22,Track 02
+   D:\tmp\tmp_mp3\Track 02.mp3
+
+and playlist you want to inject (insert)
+with the content below:
+
+.. code:: none
+
+   D:\tmp\tmp_mp3\Track 03.mp3
+   D:\tmp\tmp_mp3\Track 04.mp3
+
+You can execute the ``inject`` command
+either with option ``--top`` or with option ``--bottom``.
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\origin.m3u8" inject -f "D:\tmp\inj.m3u8" --top
+   playlist-along -f "D:\tmp\pls\origin.m3u8" inject -f "D:\tmp\inj.m3u8" --bottom
+
+
+*  ``--top`` - to paste content of the injected file at the beginning of origin file.
+   It's by default and can be omitted.
+*  ``--bottom`` - to paste content of the injected file at the end (bottom) of origin file
+
+Compare results:
+
+.. tab:: with top
+
+   .. code:: none
+
+      #EXTM3U
+      D:\tmp\tmp_mp3\Track 03.mp3
+      D:\tmp\tmp_mp3\Track 04.mp3
+      #EXTINF:11,Track 01
+      D:\tmp\tmp_mp3\Track 02.mp3
+      #EXTINF:22,Track 02
+      D:\tmp\tmp_mp3\Track 02.mp3
+
+
+.. tab:: with bottom
+
+   .. code:: none
+
+      #EXTM3U
+      #EXTINF:11,Track 01
+      D:\tmp\tmp_mp3\Track 01.mp3
+      #EXTINF:22,Track 02
+      D:\tmp\tmp_mp3\Track 02.mp3
+      D:\tmp\tmp_mp3\Track 03.mp3
+      D:\tmp\tmp_mp3\Track 04.mp3
+
+
+This command also removes all blank lines in both files,
+remains only one hashtag ``#EXTM3U``
+and adds a new line at the end of updated origin file.
+An origin playlist can be blank, but injected can't.
+
 Advanced
 ----------
 
@@ -117,3 +230,24 @@ Use option ``--dir`` for **convert** command:
    Now, you **cannot rename** a converted playlist in this case.
    If you really want this feature, let me know
    in `discussions <https://github.com/hotenov/playlist-along/discussions>`_
+
+How to create an empty playlist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For some reason you might need to create an empty playlist
+and then add tracks into it manually in player.
+Option ``--empty`` is just for this purpose:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\blank.m3u8" create --empty
+
+How to display a full content of playlist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It's easy with ``--full`` / ``-F`` option
+of 'display' command:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\origin.m3u8" display -F

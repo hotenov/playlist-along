@@ -6,8 +6,8 @@ Playlist Along
 |Read the Docs| |Tests| |Codecov|
 |Black|
 
-.. |Status| image:: https://raster.shields.io/badge/Status-alpha-orange
-   :target: https://raster.shields.io/badge/Status-alpha-orange
+.. |Status| image:: https://raster.shields.io/badge/Status-beta-26972D
+   :target: https://raster.shields.io/badge/Status-beta-26972D
    :alt: Project Status
 .. |PyPI| image:: https://img.shields.io/pypi/v/playlist-along.svg
    :target: https://pypi.org/project/playlist-along/
@@ -61,12 +61,12 @@ but who knows what the future holds for us?
    (after playlist conversion and only **.mp3** and **.flac** local files, for now)
 *  Displaying only tracks from playlist
    *(without M3U tag lines / comments)*
-*  **TBD:** Displaying a full content of playlist file
-*  **TBD:** Creating a playlist from tracks in specified folder
+*  Displaying a full content of playlist file
+*  Creating a playlist from tracks of specified folder
    (with relative or absolute paths)
-*  **TBD:** Injecting (appending) one playlist into another 
+*  Injecting (appending) one playlist into another 
    (top or bottom)
-*  **TBD:** Creating an empty playlist file
+*  Creating an empty playlist file
 *  **TBD:** Copying and conversion paths to relative, without replacing characters
    ("make relative playlist")
 
@@ -74,6 +74,11 @@ but who knows what the future holds for us?
 ----------------
 
 * Python 3.6.2 and higher
+
+Installing Python is no different than installing other apps for your OS.
+Go to downloads page on `python.org <https://www.python.org/downloads/>`_.
+Download the latest version for your OS or any version higher than ``3.6.2``.
+Then run Python installer and follow its steps.
 
 
 💻 Installation
@@ -130,11 +135,18 @@ or `file an issue`_ along with a detailed description.
 
 This project was generated from `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template.
 
-We use the following packages / libraries under the hood:
+Script uses the following packages / libraries under the hood:
 
 * `Click`_, of course (`BSD-3-Clause License <https://github.com/pallets/click/blob/main/LICENSE.rst>`_)
 * `charset_normalizer <https://github.com/Ousret/charset_normalizer>`_, for auto encoding detecting of playlist files (MIT License)
 * `single-source <https://github.com/rabbit72/single-source>`_, for getting project version from anywhere (MIT License)
+* `natsort <https://github.com/SethMMorton/natsort>`_, to get tracks order as you see in File Explorer (MIT License)
+* `mutagen <https://github.com/quodlibet/mutagen>`_, to handle audio metadata (GPL-2.0 License)
+
+and other amazing Python packages for development and testing.
+
+See a full list of dev dependencies in ``pyproject.toml``
+`here <https://github.com/hotenov/playlist-along/blob/main/pyproject.toml#L29>`_.
 
 
 .. _AIMP: https://www.aimp.ru/

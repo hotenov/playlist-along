@@ -64,12 +64,13 @@ As my personal project,
 I'd like to automate my other routine tasks related to playlists.
 That's why I'll try to implement the following features:
 
-*  Displaying a full content of playlist file
-*  Creating a playlist from tracks in specified folder
-   (with relative or absolute paths)
+*  Displaying a full content of playlist file `(ready in v2021.6.1)`
+*  Creating a playlist from tracks in specified folder 
+   (with relative or absolute paths) `(ready in v2021.6.1)`
 *  Injecting (appending) one playlist into another 
-   (top or bottom)
-*  Creating an empty playlist file (using current date, for example)
+   (top or bottom) `(ready in v2021.6.1)`
+*  Creating an empty playlist file
+   `(ready in v2021.6.1)`
 *  Copying and conversion paths to relative, without replacing characters
    ("make relative playlist")
 *  Creating CUE sheet file from text file with timing
