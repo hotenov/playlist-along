@@ -98,6 +98,52 @@ For copying songs from origin playlist to folder with converted playlist, use op
    There is a restriction for audio formats as well (only ``.mp3``, ``.flac``).
 
 
+How to create M3U with tracks in a folder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To create (generate) a playlist with absolute paths to audio files
+in certain folder and place this playlist somewhere,
+you can use this command:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs
+
+If you want create a playlist with relative paths
+and place it along with audio tracks (in the same folder),
+you should use ``--here`` option.
+In that case a full path to playlist can be omitted.
+You need only its name and format.
+Relative paths are by default:
+
+.. code-block:: bash
+
+   playlist-along -f "name.m3u8" create -f "D:\tmp\tmp_mp3" --here
+
+Do you like extended M3U? No problem.
+Use option ``--ext-m3u``:
+
+.. code-block:: bash
+
+   playlist-along -f "name.m3u8" create -f "D:\tmp\tmp_mp3" --here --ext-m3u
+
+Windows users could get used to 'natural sort order' in their Explorer windows.
+You can apply exact the same order for playlist as you see files in Windows Explorer:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs --nat-sort
+
+Or maybe in reversed order? ``-REV`` will help you:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\new.m3u8" create --from "D:\tmp\tmp_mp3" --abs --nat-sort -REV
+
+.. important::
+   Script creates all playlist files only in ``UTF-8`` encoding. 
+   Is that a problem for you - let me know.
+
 Advanced
 ----------
 
@@ -117,3 +163,14 @@ Use option ``--dir`` for **convert** command:
    Now, you **cannot rename** a converted playlist in this case.
    If you really want this feature, let me know
    in `discussions <https://github.com/hotenov/playlist-along/discussions>`_
+
+How to create an empty playlist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For some reason you might need to create an empty playlist
+and then add tracks into it manually in player.
+Option ``--empty`` is just for this purpose:
+
+.. code-block:: bash
+
+   playlist-along -f "D:\tmp\pls\blank.m3u8" create --empty
