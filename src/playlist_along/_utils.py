@@ -22,11 +22,10 @@ def _detect_file_encoding(path: Path) -> str:
             the encoding was not retrieved from 'charset_normalizer'
     """
     try:
-        detection_result = (
-            CnM.from_path(path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"])
-            .best()
-            .first()
-        )
+        detection_result = CnM.from_path(
+            path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"]
+        )  # type: ignore
+        detection_result = detection_result.best()
 
         encoding = "utf-8"
         if path.suffix == ".aimppl4":
