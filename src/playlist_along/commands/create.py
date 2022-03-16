@@ -1,14 +1,13 @@
 """Create command."""
 from pathlib import Path
-from typing import Iterator, List, Tuple
-
+from typing import Any, Iterator, List, Tuple
 
 import click
 import mutagen
 from natsort import os_sorted
 
 from .. import playlist
-from ..playlist import pass_playlist, Playlist, SONG_FORMATS
+from ..playlist import SONG_FORMATS, Playlist, pass_playlist
 
 
 @click.command(name="create")
@@ -90,8 +89,8 @@ def create_cmd(
                 click.echo(f"Warning: No supported audio files in folder '{str(dir)}'.")
                 click.get_current_context().exit()
 
-            sorted_rel: List[str] = []
-            sorted_abs: List[str] = []
+            sorted_rel: List[Any] = []
+            sorted_abs: List[Any] = []
             rel_paths = [f.name for f in valid_files]
             abs_paths = [str(f.resolve()) for f in valid_files]
 
