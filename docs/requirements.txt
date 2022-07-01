@@ -1,4 +1,4 @@
-sphinx==5.0.0
+sphinx==5.0.2
 sphinx-click==4.1.0
 furo==2022.4.7
 sphinx-inline-tabs==2022.1.2b11
