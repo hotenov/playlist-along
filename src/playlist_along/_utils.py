@@ -1,7 +1,7 @@
 """Module with utilities (helpers)."""
 from pathlib import Path
 
-from charset_normalizer import CharsetNormalizerMatches as CnM
+from charset_normalizer import from_path
 from click import ClickException
 
 
@@ -22,21 +22,23 @@ def _detect_file_encoding(path: Path) -> str:
             the encoding was not retrieved from 'charset_normalizer'
     """
     try:
-        detection_result = CnM.from_path(
+        detection_results = from_path(
             path, cp_isolation=["utf_8", "cp1252", "cp1251", "utf_16_le"]
-        )  # type: ignore
-        detection_result = detection_result.best()
+        )
+        detection_result = detection_results.best()
 
         encoding = "utf-8"
-        if path.suffix == ".aimppl4":
+
+        if detection_result is None or path.suffix == ".aimppl4":
             encoding = "utf-16-le"
-        elif detection_result.encoding == "utf_8":
+        elif detection_result.encoding == "utf_8" and detection_result is not None:
             if detection_result.byte_order_mark:
                 encoding = "utf-8-sig"
         else:
             encoding = detection_result.encoding
 
         return encoding
+
     except (OSError, AttributeError) as error:
         message = str(error)
         raise ClickException(message)

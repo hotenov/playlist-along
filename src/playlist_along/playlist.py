@@ -78,7 +78,7 @@ def get_full_content_of_playlist(
 
 
 def get_playlist_for_vlc_android(path: Path) -> Tuple[str, str]:
-    """Return coverted playlist and its encoding."""
+    """Return converted playlist and its encoding."""
     playlist_content, encoding = get_full_content_of_playlist(path)
     playlist_content = clean_m3u_from_links(playlist_content)
     relative_playlist = make_relatives_paths_in_playlist(playlist_content)
@@ -100,7 +100,7 @@ def clean_m3u_from_extended_tag(content: str) -> str:
     """Remove #EXTM3U and empty lines."""
     clean_content = content.strip()
     if clean_content[:8] == "#EXTM3U\n":
-        clean_content = clean_content[len("#EXTM3U\n"):]
+        clean_content = clean_content[len("#EXTM3U\n"):]  # noqa: BLK100
     return clean_content.strip()
 
 
@@ -167,7 +167,7 @@ def copy_local_tracks_to_folder(tracklist: List[str], dest: str) -> None:
     with click.progressbar(
         tracklist,
         label="Copying from playlist:",
-    ) as bar:
+    ) as bar:  # pragma: no cover
         for abs_path in bar:
             if not Path(abs_path).exists():
                 missing_files.append(abs_path)

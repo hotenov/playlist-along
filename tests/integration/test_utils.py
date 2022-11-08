@@ -1,4 +1,4 @@
-"""Interation test cases for the utils module."""
+"""Integration test cases for the utils module."""
 import os
 from pathlib import Path
 from typing import Any
