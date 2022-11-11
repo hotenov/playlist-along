@@ -47,7 +47,8 @@ Request features on the `Discussions`_.
 How to set up your development environment
 ------------------------------------------
 
-You need Python 3.6.2+ and the following tools:
+You need Python (with supported version on the project)
+and the following tools:
 
 - Poetry_
 - Nox_

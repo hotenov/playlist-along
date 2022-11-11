@@ -73,11 +73,11 @@ but who knows what the future holds for us?
 🛠️ Requirements
 ----------------
 
-* Python 3.6.2 and higher
+* Python 3.9 and higher
 
 Installing Python is no different than installing other apps for your OS.
 Go to downloads page on `python.org <https://www.python.org/downloads/>`_.
-Download the latest version for your OS or any version higher than ``3.6.2``.
+Download the latest version for your OS or any version higher than ``3.9.2``.
 Then run Python installer and follow its steps.
 
 
