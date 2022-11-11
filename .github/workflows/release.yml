@@ -54,7 +54,7 @@ jobs:
         run: |
           poetry version patch &&
           version=$(poetry version | awk '{ print $2 }') &&
-          poetry version $version.dev.$(date +%F%H%M%S)
+          poetry version $version.dev.$(date +%Y%m%d%H%M%S)
 
       - name: Build package
         run: |
