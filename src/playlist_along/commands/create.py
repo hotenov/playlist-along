@@ -3,11 +3,13 @@ from pathlib import Path
 from typing import Any, Iterator, List, Tuple
 
 import click
-import mutagen
+from mutagen._file import File as MutagenFile
 from natsort import os_sorted
 
 from .. import playlist
-from ..playlist import SONG_FORMATS, Playlist, pass_playlist
+from ..playlist import pass_playlist
+from ..playlist import Playlist
+from ..playlist import SONG_FORMATS
 
 
 @click.command(name="create")
@@ -164,7 +166,7 @@ def generate_playlist_content_from_zipped(
 
 def get_seconds_from_file_info(path: str) -> int:
     """Get audio length in seconds (rounded)."""
-    audio = mutagen.File(path)
+    audio = MutagenFile(path)
     length = audio.info.length
     seconds = round(length)
     return seconds
