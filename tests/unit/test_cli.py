@@ -5,7 +5,7 @@ from textwrap import dedent
 from unittest.mock import Mock
 
 from click.testing import CliRunner, Result
-from mutagen import MutagenError
+from mutagen._util import MutagenError
 import pytest
 from pytest_mock import MockFixture
 
@@ -105,7 +105,7 @@ def test_cli_converts_tracklist_for_vlc(runner: CliRunner) -> None:
             """
             )
         temp_folder = Path("temp.m3u").resolve().parent
-        target_file = temp_folder / "coverted.m3u"
+        target_file = temp_folder / "converted.m3u"
         runner.invoke(
             cli, ["--file", "temp.m3u", "convert", "--dest", str(target_file)]
         )
