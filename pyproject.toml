@@ -50,6 +50,9 @@ furo = ">=2022.3.4"
 [tool.poetry.scripts]
 playlist-along = "playlist_along.__main__:main"
 
+[tool.poetry.group.test.dependencies]
+pytest-datafiles = "^3.0.0"
+
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
 
