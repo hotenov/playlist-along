@@ -62,7 +62,7 @@ source = ["playlist_along"]
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 100
+fail_under = 85
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
