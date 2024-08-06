@@ -57,7 +57,7 @@ jobs:
         uses: "actions/upload-artifact@v4"
         with:
           name: coverage-data-${{ matrix.os }}-py${{ matrix.python-version }}
-          path: ".coverage.*"
+          path: ".coverage-${{ matrix.os }}-py${{ matrix.python-version }}.*"
 
       - name: Upload documentation
         if: matrix.session == 'docs-build'
@@ -93,12 +93,11 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
           nox --version
 
-      - name: Download coverage data
-        uses: actions/download-artifact@v4
+      - name: Download coverage data (Merge Artifacts)
+        uses: actions/upload-artifact/merge@v4
         with:
-          path: coverage-data
+          name: .coverage
           pattern: coverage-data-*
-          merge-multiple: true
 
       - name: Combine coverage data and display human readable report
         run: |
