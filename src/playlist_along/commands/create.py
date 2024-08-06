@@ -168,5 +168,5 @@ def get_seconds_from_file_info(path: str) -> int:
     """Get audio length in seconds (rounded)."""
     audio = MutagenFile(path)
     length = audio.info.length
-    seconds = round(length)
+    seconds = int(round(length))
     return seconds
