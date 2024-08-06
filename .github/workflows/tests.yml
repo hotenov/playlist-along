@@ -93,11 +93,11 @@ jobs:
           pip install --constraint=.github/workflows/constraints.txt nox nox-poetry
           nox --version
 
-      - name: Download coverage data (Merge Artifacts)
-        uses: actions/upload-artifact/merge@v4
+      - name: Download coverage data
+        uses: actions/download-artifact@v4
         with:
-          name: coverage-data
           pattern: coverage-data-*
+          merge-multiple: true
 
       - name: Combine coverage data and display human readable report
         run: |
