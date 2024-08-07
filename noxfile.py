@@ -1,4 +1,5 @@
 """Nox sessions."""
+
 from pathlib import Path
 import shutil
 import sys
@@ -10,20 +11,20 @@ import nox
 try:
     from nox_poetry import Session
     from nox_poetry import session
-except ImportError:
+except ImportError as err:
     message = f"""\
     Nox failed to import the 'nox-poetry' package.
 
     Please install it using the following command:
 
     {sys.executable} -m pip install nox-poetry"""
-    raise SystemExit(dedent(message))
+    raise SystemExit(dedent(message)) from err
 
 
 package = "playlist_along"
-python_versions = ["3.9"]
+python_versions = ["3.11"]
 nox.options.sessions = (
-    # "safety",  # Skip to merge PRs with this CVEs fixes.
+    "safety",  # Skip to merge PRs with this CVEs fixes.
     "mypy",
     "tests",
     "typeguard",
@@ -32,7 +33,7 @@ nox.options.sessions = (
 )
 
 
-@session(python="3.9")
+@session(python="3.11")
 def safety(session: Session) -> None:
     """Scan dependencies for insecure packages."""
     requirements = session.poetry.export_requirements()
@@ -42,7 +43,7 @@ def safety(session: Session) -> None:
         "check",
         "--full-report",
         f"--file={requirements}",
-        "--ignore=51457",
+        "--ignore=70612",
     )
 
 
@@ -61,7 +62,9 @@ def mypy(session: Session) -> None:
 def tests(session: Session) -> None:
     """Run the test suite."""
     session.install(".")
-    session.install("coverage[toml]", "pytest", "pygments", "pytest-datafiles", "pytest-mock")
+    session.install(
+        "coverage[toml]", "pytest", "pygments", "pytest-datafiles", "pytest-mock"
+    )
     try:
         session.run("coverage", "run", "--parallel", "-m", "pytest", *session.posargs)
     finally:
@@ -89,7 +92,9 @@ def coverage(session: Session) -> None:
 def typeguard(session: Session) -> None:
     """Runtime type checking using Typeguard."""
     session.install(".")
-    session.install("pytest", "typeguard", "pygments", "pytest-datafiles", "pytest-mock")
+    session.install(
+        "pytest", "typeguard", "pygments", "pytest-datafiles", "pytest-mock"
+    )
     session.run("pytest", f"--typeguard-packages={package}", *session.posargs)
 
 
@@ -102,7 +107,7 @@ def xdoctest(session: Session) -> None:
     session.run("python", "-m", "xdoctest", package, *args)
 
 
-@session(name="docs-build", python="3.9")
+@session(name="docs-build", python="3.11")
 def docs_build(session: Session) -> None:
     """Build the documentation."""
     args = session.posargs or ["docs", "docs/_build"]
@@ -116,12 +121,14 @@ def docs_build(session: Session) -> None:
     session.run("sphinx-build", *args)
 
 
-@session(python="3.9")
+@session(python="3.11")
 def docs(session: Session) -> None:
     """Build and serve the documentation with live reloading on file changes."""
     args = session.posargs or ["--open-browser", "docs", "docs/_build"]
     session.install(".")
-    session.install("sphinx", "sphinx-autobuild", "sphinx-click", "furo", "sphinx-inline-tabs")
+    session.install(
+        "sphinx", "sphinx-autobuild", "sphinx-click", "furo", "sphinx-inline-tabs"
+    )
 
     build_dir = Path("docs", "_build")
     if build_dir.exists():
