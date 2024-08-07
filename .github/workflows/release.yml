@@ -3,7 +3,7 @@ name: Release (build and publish 📦, generate release notes for version tag)
 env:
   # Specify Python version to quick change in the future
   # See: https://github.com/actions/setup-python/tree/main#available-versions-of-python
-  PYTHON_VERSION: "3.9"
+  PYTHON_VERSION: "3.11"
 
 on:
   push:
