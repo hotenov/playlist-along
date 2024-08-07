@@ -62,14 +62,14 @@ jobs:
 
       - name: Publish 📦 package on PyPI
         if: steps.check-version.outputs.tag
-        uses: ./.github/workflows/select-pypi-env.yml
+        uses: ./workflows/select-pypi-env.yml
         with:
           environment: 'PyPI'
           url: https://pypi.org/p/playlist-along/
 
       - name: Publish dev package on TestPyPI
         if: steps.check-version.outputs.tag != ''
-        uses: ./.github/workflows/select-pypi-env.yml
+        uses: ./workflows/select-pypi-env.yml
         with:
           environment: 'Test PyPI'
           url: https://test.pypi.org/p/playlist-along/
