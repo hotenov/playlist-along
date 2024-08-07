@@ -62,16 +62,17 @@ jobs:
 
       - name: Publish 📦 package on PyPI
         if: steps.check-version.outputs.tag
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: ./.github/workflows/select-pypi-env.yml
         with:
-          password: ${{ secrets.PYPI_API_TOKEN }}
+          environment: 'PyPI'
+          url: https://pypi.org/p/playlist-along/
 
       - name: Publish dev package on TestPyPI
         if: steps.check-version.outputs.tag != ''
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: ./.github/workflows/select-pypi-env.yml
         with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
+          environment: 'Test PyPI'
+          url: https://test.pypi.org/p/playlist-along/
 
       - name: Publish the release notes
         uses: release-drafter/release-drafter@master
