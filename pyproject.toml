@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "playlist-along"
-version = "2024.8.7b4"
+version = "2024.8.8"
 description = "Python CLI app for M3U playlists conversion and processing"
 authors = ["Artem Hotenov <qa@hotenov.com>"]
 license = "MIT"
@@ -11,6 +11,9 @@ documentation = "https://playlist-along.readthedocs.io"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
 
 [tool.poetry.urls]
