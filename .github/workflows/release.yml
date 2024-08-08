@@ -1,4 +1,8 @@
-name: Release (build and publish 📦, generate release notes for version tag)
+name: Release 
+# detect new version and create tag for it, build Python 📦
+# generate release notes for GitHub release
+  # If tag for new version was created, then publish GitHub release
+# publish Python 📦 to PyPI (if tag exists) and 🧪TestPyPI (if it was a merged PR)
 
 env:
   # Specify Python version to quick change in the future
@@ -12,7 +16,7 @@ on:
       - master
 
 jobs:
-  release:
+  build-package-and-publish-gh-release:
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -56,23 +60,15 @@ jobs:
           version=$(poetry version | awk '{ print $2 }') &&
           poetry version $version.dev.$(date +%Y%m%d%H%M%S)
 
-      - name: Build package
+      - name: Build a binary wheel (.whl)
         run: |
           poetry build --ansi
 
-      - name: Publish 📦 package on PyPI
-        if: steps.check-version.outputs.tag
-        uses: hotenov/playlist-along/.github/workflows/select-pypi-env.yml@main
+      - name: Store the distribution packages
+        uses: actions/upload-artifact@v4
         with:
-          environment: 'PyPI'
-          url: https://pypi.org/p/playlist-along/
-
-      - name: Publish dev package on TestPyPI
-        if: steps.check-version.outputs.tag != ''
-        uses: hotenov/playlist-along/.github/workflows/select-pypi-env.yml@main
-        with:
-          environment: 'Test PyPI'
-          url: https://test.pypi.org/p/playlist-along/
+          name: python-package-distributions
+          path: dist/
 
       - name: Publish the release notes
         uses: release-drafter/release-drafter@master
@@ -82,3 +78,49 @@ jobs:
           name: ${{ steps.check-version.outputs.tag }} of Playlist Along
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-to-pypi:
+      name: >-
+        Publish Python 🐍 distribution 📦 to PyPI
+      if: startsWith(github.ref, 'refs/tags/')
+      needs:
+      - build-package-and-publish-gh-release
+      runs-on: ubuntu-latest
+      environment:
+        name: 'PyPI'
+        url: https://pypi.org/p/playlist-along
+      permissions:
+        id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+      steps:
+      - name: Download all built files
+        uses: actions/download-artifact@v4
+        with:
+          name: python-package-distributions
+          path: dist/
+      - name: Publish 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  publish-to-test-pypi:
+    name: Publish Python 🐍 distribution 📦 to 🧪TestPyPI
+    needs:
+    - build-package-and-publish-gh-release
+    runs-on: ubuntu-latest
+
+    environment:
+      name: 'Test PyPI'
+      url: https://test.pypi.org/p/playlist-along
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all built file
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish 📦 to 🧪TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/
