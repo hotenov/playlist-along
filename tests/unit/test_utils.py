@@ -1,4 +1,5 @@
 """Unit-tests for the _utils module."""
+
 from pathlib import Path
 from unittest.mock import Mock
 
