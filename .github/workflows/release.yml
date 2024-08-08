@@ -1,4 +1,4 @@
-name: Release 
+name: Release and publish 📦
 # detect new version and create tag for it, build Python 📦
 # generate release notes for GitHub release
   # If tag for new version was created, then publish GitHub release
@@ -62,7 +62,7 @@ jobs:
           version=$(poetry version | awk '{ print $2 }') &&
           poetry version $version.dev.$(date +%Y%m%d%H%M%S)
 
-      - name: Build a binary wheel (.whl)
+      - name: Build a binary wheel (.whl) and a source tarball (.tr.gz)
         run: |
           poetry build --ansi
 
@@ -105,6 +105,7 @@ jobs:
 
   publish-to-test-pypi:
     name: 📦 to 🧪TestPyPI | Publish Python 🐍 distribution 
+    if: needs.build-package-and-publish-gh-release.outputs.output1 != ''
     needs:
     - build-package-and-publish-gh-release
     runs-on: ubuntu-latest
