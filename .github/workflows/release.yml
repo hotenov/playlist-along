@@ -83,7 +83,7 @@ jobs:
 
   publish-to-pypi:
       name: >-
-        Publish Python 🐍 distribution 📦 to PyPI
+        📦 to PyPI | Publish Python 🐍 distribution 
       if: needs.build-package-and-publish-gh-release.outputs.output1
       needs:
       - build-package-and-publish-gh-release
@@ -104,7 +104,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
 
   publish-to-test-pypi:
-    name: Publish Python 🐍 distribution 📦 to 🧪TestPyPI
+    name: 📦 to 🧪TestPyPI | Publish Python 🐍 distribution 
     needs:
     - build-package-and-publish-gh-release
     runs-on: ubuntu-latest
