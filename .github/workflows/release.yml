@@ -19,6 +19,8 @@ jobs:
   build-package-and-publish-gh-release:
     name: Release
     runs-on: ubuntu-latest
+    outputs:
+      output1: ${{ steps.check-version.outputs.tag }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -82,7 +84,7 @@ jobs:
   publish-to-pypi:
       name: >-
         Publish Python 🐍 distribution 📦 to PyPI
-      if: startsWith(github.ref, 'refs/tags/')
+      if: needs.build-package-and-publish-gh-release.outputs.output1
       needs:
       - build-package-and-publish-gh-release
       runs-on: ubuntu-latest
